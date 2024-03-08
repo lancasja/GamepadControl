@@ -16,6 +16,9 @@
 		849283002B8C84C400064503 /* OSCKit in Frameworks */ = {isa = PBXBuildFile; productRef = 849282FF2B8C84C400064503 /* OSCKit */; };
 		849283022B8C84C400064503 /* OSCKitCore in Frameworks */ = {isa = PBXBuildFile; productRef = 849283012B8C84C400064503 /* OSCKitCore */; };
 		8492830E2B8DB44400064503 /* OSC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8492830D2B8DB44400064503 /* OSC.swift */; };
+		8495C7412B9B20D20005B699 /* Track.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8495C7402B9B20D20005B699 /* Track.swift */; };
+		8495C7432B9B20DB0005B699 /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8495C7422B9B20DB0005B699 /* Device.swift */; };
+		8495C7452B9B20E40005B699 /* DeviceParam.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8495C7442B9B20E40005B699 /* DeviceParam.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +31,9 @@
 		849282F62B8C83FD00064503 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		849282F82B8C83FD00064503 /* GamepadControl.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = GamepadControl.entitlements; sourceTree = "<group>"; };
 		8492830D2B8DB44400064503 /* OSC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OSC.swift; sourceTree = "<group>"; };
+		8495C7402B9B20D20005B699 /* Track.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Track.swift; sourceTree = "<group>"; };
+		8495C7422B9B20DB0005B699 /* Device.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Device.swift; sourceTree = "<group>"; };
+		8495C7442B9B20E40005B699 /* DeviceParam.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceParam.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,6 +72,9 @@
 				849282F12B8C83FB00064503 /* ContentView.swift */,
 				8492830D2B8DB44400064503 /* OSC.swift */,
 				845ABC942B90771100DB1B17 /* Live.swift */,
+				8495C7402B9B20D20005B699 /* Track.swift */,
+				8495C7422B9B20DB0005B699 /* Device.swift */,
+				8495C7442B9B20E40005B699 /* DeviceParam.swift */,
 				849282F32B8C83FD00064503 /* Assets.xcassets */,
 				849282F82B8C83FD00064503 /* GamepadControl.entitlements */,
 				849282F52B8C83FD00064503 /* Preview Content */,
@@ -164,6 +173,9 @@
 				845ABC932B8F3D6A00DB1B17 /* NOTES.swift in Sources */,
 				8492830E2B8DB44400064503 /* OSC.swift in Sources */,
 				845ABC952B90771100DB1B17 /* Live.swift in Sources */,
+				8495C7452B9B20E40005B699 /* DeviceParam.swift in Sources */,
+				8495C7432B9B20DB0005B699 /* Device.swift in Sources */,
+				8495C7412B9B20D20005B699 /* Track.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
