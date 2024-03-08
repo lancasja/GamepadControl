@@ -16,9 +16,8 @@ struct ContentView: View {
     
     var body: some View {
         VStack {
-            Text("Live version: \(live.version[0]).\(live.version[1])")
-            Text("Selected track index: \(live.selected_track)")
-            Button("Print tracks", action: live.printTracks)
+            Text("Live version: \(live.version)")
+            Button("Reload osc server", action: live.reload)
         }
         .padding()
     }

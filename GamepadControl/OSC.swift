@@ -36,7 +36,7 @@ class OSC: ObservableObject {
         
         do {
             try self.server?.start()
-            print("Listening on \(localIP):\(receivePort)")
+            print("OSC @ \(localIP):\(receivePort)")
         } catch let error {
             print("Error starting OSC server: \(error)")
         }
