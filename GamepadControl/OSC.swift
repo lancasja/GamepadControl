@@ -4,41 +4,42 @@
 //
 //  Created by Admin on 2/26/24.
 //
+import SwiftUI
 import OSCKit
-import Dispatch
-import Combine
 
 class OSC: ObservableObject {
-    let localIP = "192.168.1.168"
-    let sendPort: UInt16 = 11000
-    let receivePort: UInt16 = 11001
+    let client = OSCClient()
+    let server = OSCServer(port: 11001)
+    let receiver = OSCReceiver()
     
-    var client = OSCClient()
-    var server: OSCServer?
+    static let sendPort: UInt16 = 11000
+    let host = "localhost"
     
-    @Published var lastReceivedMessage: OSCMessage?
-    
-    func sendMessage(address: String, query: [any OSCValue]) {
-        do {
-            let message = OSCMessage(address, values: query)
-            try client.send(message, to: localIP, port: sendPort)
-        } catch let error {
-            print("Error sending OSC message: \(error)")
-        }
+    func send(_ address: OSCAddressPattern, port: UInt16 = sendPort) {
+        let message = OSCMessage(address)
+        try? client.send(message, to: host, port: port)
     }
     
     func startServer() {
-        self.server = OSCServer(port: receivePort) { message, _ in
-            DispatchQueue.main.async {
-                self.lastReceivedMessage = message
+        server.setHandler { message, timeTag in
+            do {
+                try self.receiver.handle(
+                    message: message,
+                    timeTag: timeTag
+                )
+            } catch {
+                print("Error handling messages: \(error)")
             }
         }
         
         do {
-            try self.server?.start()
-            print("OSC @ \(localIP):\(receivePort)")
-        } catch let error {
-            print("Error starting OSC server: \(error)")
+            try server.start()
+        } catch {
+            print("Error starting server: \(error)")
         }
+    }
+    
+    func stopServer() {
+        server.stop()
     }
 }

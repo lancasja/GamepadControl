@@ -9,17 +9,36 @@
 //
 
 import SwiftUI
-import OSCKit
+import Sliders
+import Controls
 
 struct ContentView: View {
-    @ObservedObject var live = Live()
+    @ObservedObject var osc = OSC()
+    @ObservedObject var gamepad = Gamepad()
+    
+    @State var testValue = 0.5
+    @State var testKnobVal: Float = 0.5
     
     var body: some View {
         VStack {
-            Text("Live version: \(live.version)")
-            Button("Reload osc server", action: live.reload)
+            // Tracks
+            TrackView()
+            
+            
         }
         .padding()
+        .onAppear {
+            self.osc.startServer()
+            self.osc.send("/live/song/get/num_tracks")
+            self.osc.send("/live/view/start_listen/selected_track")
+            
+            let els = gamepad.elements.keys.sorted()
+            print(els)
+        }
+        .onDisappear {
+            self.osc.send("/live/view/stop_listen/selected_track")
+            self.osc.stopServer()
+        }
     }
 }
 
