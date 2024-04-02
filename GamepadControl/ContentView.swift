@@ -9,8 +9,6 @@
 //
 
 import SwiftUI
-import Sliders
-import Controls
 
 struct ContentView: View {
     @ObservedObject var osc = OSC()

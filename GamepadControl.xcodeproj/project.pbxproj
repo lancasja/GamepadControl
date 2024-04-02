@@ -10,15 +10,14 @@
 		842DD5452BBB641300935F6C /* OSCReceiver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 842DD5442BBB641300935F6C /* OSCReceiver.swift */; };
 		842DD5472BBB643800935F6C /* Gamepad.swift in Sources */ = {isa = PBXBuildFile; fileRef = 842DD5462BBB643800935F6C /* Gamepad.swift */; };
 		842DD5492BBB645300935F6C /* TrackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 842DD5482BBB645300935F6C /* TrackView.swift */; };
-		842DD54C2BBB649500935F6C /* AudioKitUI in Frameworks */ = {isa = PBXBuildFile; productRef = 842DD54B2BBB649500935F6C /* AudioKitUI */; };
-		842DD54F2BBB64E300935F6C /* Sliders in Frameworks */ = {isa = PBXBuildFile; productRef = 842DD54E2BBB64E300935F6C /* Sliders */; };
 		845ABC932B8F3D6A00DB1B17 /* NOTES.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845ABC922B8F3D6A00DB1B17 /* NOTES.swift */; };
+		847C40572BBCB16E00A385E7 /* AudioKitUI in Frameworks */ = {isa = PBXBuildFile; productRef = 847C40562BBCB16E00A385E7 /* AudioKitUI */; };
+		847C405A2BBCB17700A385E7 /* OSCKit in Frameworks */ = {isa = PBXBuildFile; productRef = 847C40592BBCB17700A385E7 /* OSCKit */; };
+		847C405C2BBCB17700A385E7 /* OSCKitCore in Frameworks */ = {isa = PBXBuildFile; productRef = 847C405B2BBCB17700A385E7 /* OSCKitCore */; };
 		849282F02B8C83FB00064503 /* GamepadControlApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 849282EF2B8C83FB00064503 /* GamepadControlApp.swift */; };
 		849282F22B8C83FB00064503 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 849282F12B8C83FB00064503 /* ContentView.swift */; };
 		849282F42B8C83FD00064503 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 849282F32B8C83FD00064503 /* Assets.xcassets */; };
 		849282F72B8C83FD00064503 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 849282F62B8C83FD00064503 /* Preview Assets.xcassets */; };
-		849283002B8C84C400064503 /* OSCKit in Frameworks */ = {isa = PBXBuildFile; productRef = 849282FF2B8C84C400064503 /* OSCKit */; };
-		849283022B8C84C400064503 /* OSCKitCore in Frameworks */ = {isa = PBXBuildFile; productRef = 849283012B8C84C400064503 /* OSCKitCore */; };
 		8492830E2B8DB44400064503 /* OSC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8492830D2B8DB44400064503 /* OSC.swift */; };
 /* End PBXBuildFile section */
 
@@ -41,10 +40,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				849283022B8C84C400064503 /* OSCKitCore in Frameworks */,
-				842DD54F2BBB64E300935F6C /* Sliders in Frameworks */,
-				842DD54C2BBB649500935F6C /* AudioKitUI in Frameworks */,
-				849283002B8C84C400064503 /* OSCKit in Frameworks */,
+				847C40572BBCB16E00A385E7 /* AudioKitUI in Frameworks */,
+				847C405A2BBCB17700A385E7 /* OSCKit in Frameworks */,
+				847C405C2BBCB17700A385E7 /* OSCKitCore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -109,10 +107,9 @@
 			);
 			name = GamepadControl;
 			packageProductDependencies = (
-				849282FF2B8C84C400064503 /* OSCKit */,
-				849283012B8C84C400064503 /* OSCKitCore */,
-				842DD54B2BBB649500935F6C /* AudioKitUI */,
-				842DD54E2BBB64E300935F6C /* Sliders */,
+				847C40562BBCB16E00A385E7 /* AudioKitUI */,
+				847C40592BBCB17700A385E7 /* OSCKit */,
+				847C405B2BBCB17700A385E7 /* OSCKitCore */,
 			);
 			productName = GamepadControl;
 			productReference = 849282EC2B8C83FB00064503 /* GamepadControl.app */;
@@ -143,9 +140,8 @@
 			);
 			mainGroup = 849282E32B8C83FB00064503;
 			packageReferences = (
-				849282FE2B8C84C400064503 /* XCRemoteSwiftPackageReference "OSCKit" */,
-				842DD54A2BBB649500935F6C /* XCRemoteSwiftPackageReference "AudioKitUI" */,
-				842DD54D2BBB64E300935F6C /* XCRemoteSwiftPackageReference "swiftui-sliders" */,
+				847C40552BBCB16E00A385E7 /* XCRemoteSwiftPackageReference "AudioKitUI" */,
+				847C40582BBCB17700A385E7 /* XCRemoteSwiftPackageReference "OSCKit" */,
 			);
 			productRefGroup = 849282ED2B8C83FB00064503 /* Products */;
 			projectDirPath = "";
@@ -382,7 +378,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		842DD54A2BBB649500935F6C /* XCRemoteSwiftPackageReference "AudioKitUI" */ = {
+		847C40552BBCB16E00A385E7 /* XCRemoteSwiftPackageReference "AudioKitUI" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/AudioKit/AudioKitUI";
 			requirement = {
@@ -390,15 +386,7 @@
 				minimumVersion = 0.3.7;
 			};
 		};
-		842DD54D2BBB64E300935F6C /* XCRemoteSwiftPackageReference "swiftui-sliders" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "github.com:spacenation/swiftui-sliders.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 2.1.0;
-			};
-		};
-		849282FE2B8C84C400064503 /* XCRemoteSwiftPackageReference "OSCKit" */ = {
+		847C40582BBCB17700A385E7 /* XCRemoteSwiftPackageReference "OSCKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/orchetect/OSCKit.git";
 			requirement = {
@@ -409,24 +397,19 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		842DD54B2BBB649500935F6C /* AudioKitUI */ = {
+		847C40562BBCB16E00A385E7 /* AudioKitUI */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 842DD54A2BBB649500935F6C /* XCRemoteSwiftPackageReference "AudioKitUI" */;
+			package = 847C40552BBCB16E00A385E7 /* XCRemoteSwiftPackageReference "AudioKitUI" */;
 			productName = AudioKitUI;
 		};
-		842DD54E2BBB64E300935F6C /* Sliders */ = {
+		847C40592BBCB17700A385E7 /* OSCKit */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 842DD54D2BBB64E300935F6C /* XCRemoteSwiftPackageReference "swiftui-sliders" */;
-			productName = Sliders;
-		};
-		849282FF2B8C84C400064503 /* OSCKit */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 849282FE2B8C84C400064503 /* XCRemoteSwiftPackageReference "OSCKit" */;
+			package = 847C40582BBCB17700A385E7 /* XCRemoteSwiftPackageReference "OSCKit" */;
 			productName = OSCKit;
 		};
-		849283012B8C84C400064503 /* OSCKitCore */ = {
+		847C405B2BBCB17700A385E7 /* OSCKitCore */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 849282FE2B8C84C400064503 /* XCRemoteSwiftPackageReference "OSCKit" */;
+			package = 847C40582BBCB17700A385E7 /* XCRemoteSwiftPackageReference "OSCKit" */;
 			productName = OSCKitCore;
 		};
 /* End XCSwiftPackageProductDependency section */

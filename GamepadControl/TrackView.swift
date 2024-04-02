@@ -7,7 +7,6 @@
 
 import SwiftUI
 import Controls
-import Sliders
 
 struct TrackView: View {
     @State var testValue = 0.5
@@ -58,10 +57,8 @@ struct TrackView: View {
                 // Right
                 VStack {
                     Text("-inf")
-                    ValueSlider(value: $testValue)
-                        .valueSliderStyle(
-                            VerticalValueSliderStyle()
-                        )
+                    Text("{ SLIDER }")
+                    
                 }.frame(width: 50)
             }
             
