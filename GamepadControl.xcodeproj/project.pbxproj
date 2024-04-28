@@ -10,6 +10,7 @@
 		842DD5452BBB641300935F6C /* OSCReceiver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 842DD5442BBB641300935F6C /* OSCReceiver.swift */; };
 		842DD5472BBB643800935F6C /* Gamepad.swift in Sources */ = {isa = PBXBuildFile; fileRef = 842DD5462BBB643800935F6C /* Gamepad.swift */; };
 		842DD5492BBB645300935F6C /* TrackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 842DD5482BBB645300935F6C /* TrackView.swift */; };
+		843926B82BD1277E0063C8DE /* RoomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 843926B72BD1277E0063C8DE /* RoomView.swift */; };
 		845ABC932B8F3D6A00DB1B17 /* NOTES.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845ABC922B8F3D6A00DB1B17 /* NOTES.swift */; };
 		847C40572BBCB16E00A385E7 /* AudioKitUI in Frameworks */ = {isa = PBXBuildFile; productRef = 847C40562BBCB16E00A385E7 /* AudioKitUI */; };
 		847C405A2BBCB17700A385E7 /* OSCKit in Frameworks */ = {isa = PBXBuildFile; productRef = 847C40592BBCB17700A385E7 /* OSCKit */; };
@@ -25,6 +26,7 @@
 		842DD5442BBB641300935F6C /* OSCReceiver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OSCReceiver.swift; sourceTree = "<group>"; };
 		842DD5462BBB643800935F6C /* Gamepad.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Gamepad.swift; sourceTree = "<group>"; };
 		842DD5482BBB645300935F6C /* TrackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackView.swift; sourceTree = "<group>"; };
+		843926B72BD1277E0063C8DE /* RoomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomView.swift; sourceTree = "<group>"; };
 		845ABC922B8F3D6A00DB1B17 /* NOTES.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NOTES.swift; sourceTree = "<group>"; };
 		849282EC2B8C83FB00064503 /* GamepadControl.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GamepadControl.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		849282EF2B8C83FB00064503 /* GamepadControlApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamepadControlApp.swift; sourceTree = "<group>"; };
@@ -74,6 +76,7 @@
 				842DD5442BBB641300935F6C /* OSCReceiver.swift */,
 				842DD5462BBB643800935F6C /* Gamepad.swift */,
 				842DD5482BBB645300935F6C /* TrackView.swift */,
+				843926B72BD1277E0063C8DE /* RoomView.swift */,
 				849282F32B8C83FD00064503 /* Assets.xcassets */,
 				849282F82B8C83FD00064503 /* GamepadControl.entitlements */,
 				849282F52B8C83FD00064503 /* Preview Content */,
@@ -123,7 +126,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1520;
-				LastUpgradeCheck = 1520;
+				LastUpgradeCheck = 1530;
 				TargetAttributes = {
 					849282EB2B8C83FB00064503 = {
 						CreatedOnToolsVersion = 15.2;
@@ -170,6 +173,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				849282F22B8C83FB00064503 /* ContentView.swift in Sources */,
+				843926B82BD1277E0063C8DE /* RoomView.swift in Sources */,
 				842DD5492BBB645300935F6C /* TrackView.swift in Sources */,
 				842DD5472BBB643800935F6C /* Gamepad.swift in Sources */,
 				849282F02B8C83FB00064503 /* GamepadControlApp.swift in Sources */,
@@ -216,6 +220,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -235,7 +240,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MACOSX_DEPLOYMENT_TARGET = 13.5;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -279,6 +284,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -292,7 +298,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MACOSX_DEPLOYMENT_TARGET = 13.5;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = macosx;
@@ -309,6 +315,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"GamepadControl/Preview Content\"";
 				DEVELOPMENT_TEAM = MMW492ELYY;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -336,6 +343,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"GamepadControl/Preview Content\"";
 				DEVELOPMENT_TEAM = MMW492ELYY;
 				ENABLE_HARDENED_RUNTIME = YES;

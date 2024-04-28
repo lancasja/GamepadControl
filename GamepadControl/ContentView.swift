@@ -9,6 +9,7 @@
 //
 
 import SwiftUI
+import SceneKit
 
 struct ContentView: View {
     @ObservedObject var osc = OSC()
@@ -17,14 +18,13 @@ struct ContentView: View {
     @State var testValue = 0.5
     @State var testKnobVal: Float = 0.5
     
+    let scene = RoomScene()
+    
     var body: some View {
-        VStack {
-            // Tracks
+        ZStack(alignment: .topLeading) {
+            RoomView()
             TrackView()
-            
-            
         }
-        .padding()
         .onAppear {
             self.osc.startServer()
             self.osc.send("/live/song/get/num_tracks")

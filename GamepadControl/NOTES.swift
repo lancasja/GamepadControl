@@ -30,6 +30,19 @@
  - Sending and receiving commands between Live
  - When our app wants to perform an action it will call a command from this API
  
+ 
+## Errors
+ 
+ `Error starting server: Error Domain=NSPOSIXErrorDomain Code=48 "Address already in use" UserInfo={NSLocalizedDescription=Address already in use, NSLocalizedFailureReason=Error in bind() function}`
+ 
+ Ports are in use, need to find and shut them down.
+ 
+ Get PID of commands using specified ports:
+ `sudo lsof -i :{port}`
+ 
+ Kill the process by PID:
+ `sudo kill -9 {PID}`
+ 
  --------- -------- --------- --------
  
  # Scratch Pad
