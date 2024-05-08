@@ -83,11 +83,7 @@ class RoomScene: SCNScene {
     }
     
     func addTrack() {
-        let cube = SCNNode(geometry: SCNSphere(radius: 0.5))
-        cube.geometry?.firstMaterial?.diffuse.contents = NSColor.yellow
-        cube.position = SCNVector3(0, 5, -5)
-        
-        rootNode.addChildNode(cube)
+        rootNode.addChildNode(TrackObject())
     }
     
     func addLights() {

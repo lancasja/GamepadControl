@@ -8,63 +8,76 @@
 import SwiftUI
 import Controls
 
+class TrackViewModel: ObservableObject, Identifiable {
+    @Published var index: Int
+    @Published var name: String
+    
+    @Published var mute = false
+    @Published var solo = false
+    @Published var rec = false
+    @Published var gain = 0.0
+    
+    @Published var size = 1
+    @Published var azimuth = 0.0
+    @Published var elevation = 0.0
+    @Published var distance = 0.0
+    
+    init(index: Int = 0, name: String = "track_name") {
+        self.index = index
+        self.name = name
+    }
+}
+
 struct TrackView: View {
-    @State var index = 0
-    @State var name = "track_name"
-    @State var mute = false
-    @State var solo = false
-    @State var rec = false
-    @State var gain = 0.0
-    @State var size = 1
-    @State var azimuth = 0.0
-    @State var elevation = 0.0
-    @State var distance = 0.0
-    @State var popover = false
+    var model = TrackViewModel()
     
     var body: some View {
         VStack(alignment: .leading) {
             HStack {
-                Text("\(index)")
+                Text("\(model.index)")
                     .foregroundStyle(.black)
                     .padding([.leading, .trailing], 12)
                     .padding([.top, .bottom], 4)
                     .background(.yellow)
                 
-                Text(name)
+                Text(model.name)
                     .frame(width: 99, alignment: .leading)
                 
-//                Image(systemName: "chevron.down")
+                Image(systemName: "chevron.down")
             }
             .padding(.trailing, 8)
             
             HStack(spacing: 4) {
                 Button {
-                    mute = !mute
+                    let mute = model.mute
+                    model.mute = !mute
                 } label: {
-                    Image(systemName: "speaker.slash\(mute ? ".fill" : "")")
-                        .foregroundStyle(mute ? .black : .white)
+                    Image(systemName: "speaker.slash\(model.mute ? ".fill" : "")")
+                        .foregroundStyle(model.mute ? .black : .white)
                 }
                 .buttonStyle(.borderedProminent)
-                .tint(mute ? .orange : .gray)
+                .tint(model.mute ? .orange : .gray)
                 
                 
                 Button {
-                    solo = !solo
+                    let solo = model.solo
+                    model.solo = !solo
                 } label: {
-                    Image(systemName: "s.circle\(solo ? ".fill" : "")")
-                        .foregroundColor(solo ? .black : .white)
+                    Image(systemName: "s.circle\(model.solo ? ".fill" : "")")
+                        .foregroundColor(model.solo ? .black : .white)
                 }
                 .buttonStyle(.borderedProminent)
-                .tint(solo ? .blue : .gray)
+                .tint(model.solo ? .blue : .gray)
                 
                 Button {
-                    rec = !rec
+                    let rec = model.rec
+                    model.rec = !rec
                 } label: {
-                    Image(systemName: "record.circle\(rec ? ".fill" : "")")
-                        .foregroundColor(rec ? .black : .white)
+                    Image(systemName: "record.circle\(model.rec ? ".fill" : "")")
+                        .foregroundColor(model.rec ? .black : .white)
                 }
                 .buttonStyle(.borderedProminent)
-                .tint(rec ? .red : .gray)
+                .tint(model.rec ? .red : .gray)
             }
             
             HStack(spacing: 4) {
@@ -73,7 +86,7 @@ struct TrackView: View {
                     HStack(spacing: 0) {
                         Image(systemName: "arrowtriangle.left.fill")
                             .imageScale(.small)
-                        Text("\(azimuth, specifier: "%.0f")")
+                        Text("\(model.azimuth, specifier: "%.0f")")
                             .frame(width: 25)
                             .padding([.leading, .trailing], 4)
                             .monospaced()
@@ -82,7 +95,7 @@ struct TrackView: View {
                     }.background(.black)
                 }
                 .gesture(DragGesture().onChanged({ value in
-                    azimuth = value.location.x
+                    model.azimuth = value.location.x
                 }))
                 
                 VStack {
@@ -90,7 +103,7 @@ struct TrackView: View {
                     HStack(spacing: 0) {
                         Image(systemName: "arrowtriangle.up.fill")
                             .imageScale(.small)
-                        Text("\(elevation, specifier: "%.0f")")
+                        Text("\(model.elevation, specifier: "%.0f")")
                             .frame(width: 25)
                             .padding([.leading, .trailing], 4)
                             .monospaced()
@@ -99,7 +112,7 @@ struct TrackView: View {
                     }.background(.black)
                 }
                 .gesture(DragGesture().onChanged({ value in
-                    elevation = value.location.x
+                    model.elevation = value.location.x
                 }))
                 
                 VStack {
@@ -107,7 +120,7 @@ struct TrackView: View {
                     HStack(spacing: 0) {
                         Image(systemName: "minus")
                             .imageScale(.small)
-                        Text("\(distance, specifier: "%.0f")")
+                        Text("\(model.distance, specifier: "%.0f")")
                             .frame(width: 25)
                             .padding([.leading, .trailing], 4)
                             .monospaced()
@@ -116,7 +129,7 @@ struct TrackView: View {
                     }.background(.black)
                 }
                 .gesture(DragGesture().onChanged({ value in
-                    distance = value.location.x
+                    model.distance = value.location.x
                 }))
             }
         }.background()

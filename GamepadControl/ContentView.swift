@@ -14,9 +14,7 @@ import SceneKit
 struct ContentView: View {
     @ObservedObject var osc = OSC()
     @ObservedObject var gamepad = Gamepad()
-    
-    @State var testValue = 0.5
-    @State var testKnobVal: Float = 0.5
+    @ObservedObject var trackModel = TrackViewModel()
     
     let scene = RoomScene()
     
@@ -29,9 +27,6 @@ struct ContentView: View {
             self.osc.startServer()
             self.osc.send("/live/song/get/num_tracks")
             self.osc.send("/live/view/start_listen/selected_track")
-            
-            let els = gamepad.elements.keys.sorted()
-            print(els)
         }
         .onDisappear {
             self.osc.send("/live/view/stop_listen/selected_track")
