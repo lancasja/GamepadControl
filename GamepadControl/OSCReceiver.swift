@@ -14,11 +14,15 @@ class OSCReceiver {
     private let test: OSCAddressSpace.MethodID
     private let num_tracks: OSCAddressSpace.MethodID
     private let selected_track: OSCAddressSpace.MethodID
+    private let error: OSCAddressSpace.MethodID
+    private let mute: OSCAddressSpace.MethodID
     
     public init() {
         test = addressSpace.register(localAddress: "/live/test")
         num_tracks = addressSpace.register(localAddress: "/live/song/get/num_tracks")
         selected_track = addressSpace.register(localAddress: "/live/view/get/selected_track")
+        error = addressSpace.register(localAddress: "/live/error")
+        mute = addressSpace.register(localAddress: "/live/track/get/mute")
     }
     
     public func handle(message: OSCMessage, timeTag: OSCTimeTag) throws {
@@ -40,6 +44,10 @@ class OSCReceiver {
             case selected_track:
                 let index = try message.values.masked(Int.self)
                 self.handleSelectedTrack(index: index)
+            case mute:
+                let muteState = try message.values.masked(Bool.self)
+//                self.handleMute(value: muteState)
+                print("mute?????")
             default:
                 return
             }
@@ -57,4 +65,9 @@ class OSCReceiver {
     private func handleSelectedTrack(index: Int) {
         print("selected_track: \(index)")
     }
+    
+    private func handleMute(value: Bool) {
+        print("VALUE: \(value)")
+    }
 }
+

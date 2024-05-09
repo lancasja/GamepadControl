@@ -15,6 +15,7 @@ struct ContentView: View {
     @ObservedObject var osc = OSC()
     @ObservedObject var gamepad = Gamepad()
     @ObservedObject var trackModel = TrackViewModel()
+    @ObservedObject var messageCenter = MessageCenter()
     
     let scene = RoomScene()
     
@@ -27,9 +28,11 @@ struct ContentView: View {
             self.osc.startServer()
             self.osc.send("/live/song/get/num_tracks")
             self.osc.send("/live/view/start_listen/selected_track")
+            self.osc.send("/live/track/start_listen/mute")
         }
         .onDisappear {
             self.osc.send("/live/view/stop_listen/selected_track")
+            self.osc.send("/live/track/stop_listen/mute")
             self.osc.stopServer()
         }
     }

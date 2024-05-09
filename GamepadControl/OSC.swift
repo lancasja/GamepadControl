@@ -15,8 +15,12 @@ class OSC: ObservableObject {
     static let sendPort: UInt16 = 11000
     let host = "localhost"
     
-    func send(_ address: OSCAddressPattern, port: UInt16 = sendPort) {
-        let message = OSCMessage(address)
+    func send(
+        _ address: OSCAddressPattern,
+        _ values: [AnyOSCValue] = [],
+        port: UInt16 = sendPort
+    ) {
+        let message = OSCMessage(address, values: values)
         try? client.send(message, to: host, port: port)
     }
     

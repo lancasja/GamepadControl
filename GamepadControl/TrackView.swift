@@ -29,7 +29,7 @@ class TrackViewModel: ObservableObject, Identifiable {
 }
 
 struct TrackView: View {
-    var model = TrackViewModel()
+    @ObservedObject var model = TrackViewModel()
     
     var body: some View {
         VStack(alignment: .leading) {

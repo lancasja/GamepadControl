@@ -57,24 +57,15 @@ class Gamepad: ObservableObject {
         let controller = notification.object as! GCController
         
         controller.extendedGamepad?.rightShoulder.pressedChangedHandler = { (button, value, pressed) in
-            if let name = button.localizedName {
-                self.handleButton(name, pressed)
-            }
-        }
-        
-        controller.extendedGamepad?.leftShoulder.pressedChangedHandler = { (button, value, pressed) in
-            if let name = button.localizedName {
-                self.handleButton(name, pressed)
-            }
+                NotificationCenter.default.post(
+                    name: Notification.Name(AudioControlAction.trackMute.rawValue),
+                    object: nil
+                )
         }
     }
     
     func didDisconnect(_ notification: Notification) {
         print("controller disconnected")
         self.connected = false
-    }
-    
-    func handleButton(_ name: String, _ pressed: Bool) {
-        self.elements[name]?.isPressed = pressed
     }
 }
