@@ -8,7 +8,7 @@
 import SwiftUI
 import OSCKit
 
-class OSCReceiver {
+class OSCReceiver: ObservableObject {
     private let addressSpace = OSCAddressSpace()
 
     private let test: OSCAddressSpace.MethodID
@@ -16,6 +16,8 @@ class OSCReceiver {
     private let selected_track: OSCAddressSpace.MethodID
     private let error: OSCAddressSpace.MethodID
     private let mute: OSCAddressSpace.MethodID
+    
+    @ObservedObject var messageCenter = MessageCenter()
     
     public init() {
         test = addressSpace.register(localAddress: "/live/test")
@@ -63,6 +65,7 @@ class OSCReceiver {
     }
     
     private func handleSelectedTrack(index: Int) {
+        self.messageCenter.setSelectedTrack(trackIdx: index)
         print("selected_track: \(index)")
     }
     
