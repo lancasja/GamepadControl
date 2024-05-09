@@ -38,10 +38,14 @@ class DawState: ObservableObject {
 
 class MessageCenter: ObservableObject {
     
-    var osc = OSC()
-    @EnvironmentObject var dawState: DawState
+    @State var dawState: DawState
+    @ObservedObject var osc: OSC
     
     init() {
+        let dawStateInit = DawState()
+        osc = OSC(dawStateInit: dawStateInit)
+        dawState = dawStateInit
+        
         let dummyTrack = TrackState()
         
 //        NotificationCenter.default.addObserver(
@@ -87,6 +91,19 @@ class MessageCenter: ObservableObject {
             object: nil
         )
 
+    }
+    
+    @objc func oscStart() {
+        self.osc.startServer()
+        self.osc.send("/live/song/get/num_tracks")
+        self.osc.send("/live/view/start_listen/selected_track")
+        self.osc.send("/live/track/start_listen/mute")
+    }
+    
+    @objc func oscStop() {
+        self.osc.send("/live/view/stop_listen/selected_track")
+        self.osc.send("/live/track/stop_listen/mute")
+        self.osc.stopServer()
     }
     
     @objc func handleTrackMute() {

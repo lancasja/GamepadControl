@@ -12,8 +12,6 @@ import SwiftUI
 import SceneKit
 
 struct ContentView: View {
-    @ObservedObject var dawState = DawState()
-    @ObservedObject var osc = OSC()
     @ObservedObject var gamepad = Gamepad()
     @ObservedObject var trackModel = TrackViewModel()
     @ObservedObject var messageCenter = MessageCenter()
@@ -26,17 +24,11 @@ struct ContentView: View {
             RoomView()
             TrackView()
         }
-        .environmentObject(dawState)
         .onAppear {
-            self.osc.startServer()
-            self.osc.send("/live/song/get/num_tracks")
-            self.osc.send("/live/view/start_listen/selected_track")
-            self.osc.send("/live/track/start_listen/mute")
+            self.messageCenter.oscStart()
         }
         .onDisappear {
-            self.osc.send("/live/view/stop_listen/selected_track")
-            self.osc.send("/live/track/stop_listen/mute")
-            self.osc.stopServer()
+            self.messageCenter.oscStop()
         }
     }
 }

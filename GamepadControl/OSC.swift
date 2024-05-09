@@ -8,12 +8,20 @@ import SwiftUI
 import OSCKit
 
 class OSC: ObservableObject {
-    let client = OSCClient()
-    let server = OSCServer(port: 11001)
-    let receiver = OSCReceiver()
-    
+    @ObservedObject var dawState: DawState
+    var client: OSCClient
+    var server: OSCServer
+    var receiver: OSCReceiver
+
     static let sendPort: UInt16 = 11000
     let host = "localhost"
+    
+    init(dawStateInit: DawState) {
+        dawState = dawStateInit
+        client = OSCClient()
+        server = OSCServer(port: 11001)
+        receiver = OSCReceiver(dawStateInit)
+    }
     
     func send(
         _ address: OSCAddressPattern,

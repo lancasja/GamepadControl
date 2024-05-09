@@ -17,14 +17,15 @@ class OSCReceiver: ObservableObject {
     private let error: OSCAddressSpace.MethodID
     private let mute: OSCAddressSpace.MethodID
     
-//    @EnvironmentObject var dawState: DawState
+    @ObservedObject var dawState: DawState
     
-    public init() {
+    public init(_ dawStateInit: DawState) {
         test = addressSpace.register(localAddress: "/live/test")
         num_tracks = addressSpace.register(localAddress: "/live/song/get/num_tracks")
         selected_track = addressSpace.register(localAddress: "/live/view/get/selected_track")
         error = addressSpace.register(localAddress: "/live/error")
         mute = addressSpace.register(localAddress: "/live/track/get/mute")
+        dawState = dawStateInit
     }
     
     public func handle(message: OSCMessage, timeTag: OSCTimeTag) throws {
@@ -65,7 +66,7 @@ class OSCReceiver: ObservableObject {
     }
     
     private func handleSelectedTrack(index: Int) {
-//        self.dawState.setSelectedTrack(index)
+        self.dawState.setSelectedTrack(index)
         print("selected_track: \(index)")
     }
     
