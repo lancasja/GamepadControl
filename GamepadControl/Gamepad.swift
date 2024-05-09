@@ -65,55 +65,43 @@ class Gamepad: ObservableObject {
         )
     }
     
+    func actionForKeymap(_ key: GameControlKeys) {
+        let action = self.keymap[key]
+        action?.notify()
+    }
+    
     func didConnect(_ notification: Notification) {
         print("controller connected")
         self.connected = true
         
         let controller = notification.object as! GCController
         
-        controller.extendedGamepad?.rightShoulder.pressedChangedHandler = { (button, value, pressed) in
-            if let action = self.keymap[GameControlKeys.R1] {
-                NotificationCenter.default.post(
-                    name: Notification.Name(action.rawValue),
-                    object: nil
-                )
-            }
+        controller.extendedGamepad?.rightShoulder.pressedChangedHandler = { (_, _, _) in
+            let action = AudioControlAction.trackNext
+            action.notify()
         }
         
-        controller.extendedGamepad?.leftShoulder.pressedChangedHandler = { (button, value, pressed) in
-            if let action = self.keymap[GameControlKeys.L1] {
-                NotificationCenter.default.post(
-                    name: Notification.Name(action.rawValue),
-                    object: nil
-                )
-            }
+        controller.extendedGamepad?.leftShoulder.pressedChangedHandler = { (_, _, _) in
+            self.actionForKeymap(GameControlKeys.L1)
+            let action = AudioControlAction.trackPrevious
+            action.notify()
         }
+
         
         controller.extendedGamepad?.buttonY.pressedChangedHandler = { (button, value, pressed) in
-            if let action = self.keymap[GameControlKeys.Triangle] {
-                NotificationCenter.default.post(
-                    name: Notification.Name(action.rawValue),
-                    object: nil
-                )
-            }
+            let action = AudioControlAction.trackArm
+            action.notify()
         }
         
         controller.extendedGamepad?.dpad.down.pressedChangedHandler = { (button, value, pressed) in
-            if let action = self.keymap[GameControlKeys.DownArrow] {
-                NotificationCenter.default.post(
-                    name: Notification.Name(action.rawValue),
-                    object: nil
-                )
-            }
+//            let action = self.keymap[GameControlKeys.DownArrow]
+            let action = AudioControlAction.trackMute
+            action.notify()
         }
         
         controller.extendedGamepad?.dpad.up.pressedChangedHandler = { (button, value, pressed) in
-            if let action = self.keymap[GameControlKeys.UpArrow] {
-                NotificationCenter.default.post(
-                    name: Notification.Name(action.rawValue),
-                    object: nil
-                )
-            }
+            let action = AudioControlAction.trackSolo
+            action.notify()
         }
 
     }

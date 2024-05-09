@@ -18,6 +18,14 @@ enum AudioControlAction: String {
     case pannerSpreadInc, pannerSpreadDec
     case transportPlay, transportStop
     case transportRecord, transportUndo, transportRedo
+    
+    func notify() {
+        print("sending notification \(self.rawValue)")
+        NotificationCenter.default.post(
+            name: Notification.Name(self.rawValue),
+            object: nil
+        )
+    }
 }
 
 struct TrackState {
