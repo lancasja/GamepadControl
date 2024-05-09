@@ -48,9 +48,9 @@ class OSCReceiver: ObservableObject {
                 let index = try message.values.masked(Int.self)
                 self.handleSelectedTrack(index: index)
             case mute:
+                print("MUTE!!!!????")
                 let muteState = try message.values.masked(Bool.self)
-//                self.handleMute(value: muteState)
-                print("mute?????")
+                self.handleMute(value: muteState)
             default:
                 return
             }
@@ -62,6 +62,7 @@ class OSCReceiver: ObservableObject {
     }
     
     private func handleNumTracks(count: Int) {
+        self.dawState.setNumTracks(count)
         print("num_tracks: \(count)")
     }
     
@@ -72,6 +73,8 @@ class OSCReceiver: ObservableObject {
     
     private func handleMute(value: Bool) {
         print("VALUE: \(value)")
+        self.dawState.tracks[self.dawState.selectedTrack].muted = value
+//        print("VALUE: \(value)")
     }
 }
 

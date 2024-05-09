@@ -30,6 +30,7 @@ class OSC: ObservableObject {
     ) {
         let message = OSCMessage(address, values: values)
         try? client.send(message, to: host, port: port)
+        print("Sending OSC \(message)")
     }
     
     func startServer() {

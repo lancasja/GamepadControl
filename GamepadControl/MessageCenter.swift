@@ -42,6 +42,15 @@ class DawState: ObservableObject {
     func setSelectedTrack(_ index: Int) {
         selectedTrack = index
     }
+    
+    func setNumTracks(_ num: Int) {
+        numTracks = num
+        if tracks.count < numTracks {
+            for _ in 0..<numTracks {
+                tracks.append(TrackState())
+            }
+        }
+    }
 }
 
 class MessageCenter: ObservableObject {
@@ -105,17 +114,20 @@ class MessageCenter: ObservableObject {
         self.osc.startServer()
         self.osc.send("/live/song/get/num_tracks")
         self.osc.send("/live/view/start_listen/selected_track")
-        self.osc.send("/live/track/start_listen/mute")
+        self.osc.send("/live/song/start_listen/mute")
     }
     
     @objc func oscStop() {
         self.osc.send("/live/view/stop_listen/selected_track")
-        self.osc.send("/live/track/stop_listen/mute")
+        self.osc.send("/live/song/start_listen/mute")
         self.osc.stopServer()
     }
     
     @objc func handleTrackMute() {
-        self.osc.send("/live/track/set/mute", [self.dawState.selectedTrack, true])
+        var curTrack = self.dawState.tracks[self.dawState.selectedTrack]
+        let willMute = !curTrack.muted
+        self.dawState.tracks[self.dawState.selectedTrack].muted = willMute
+        self.osc.send("/live/track/set/mute", [self.dawState.selectedTrack, willMute])
     }
     
     @objc func handleTrackArm() {
@@ -125,13 +137,19 @@ class MessageCenter: ObservableObject {
     @objc func handleTrackPrevious() {
         var newTrackIdx = self.dawState.selectedTrack - 1
         if newTrackIdx < 0 {
-            newTrackIdx = self.dawState.numTracks
+            newTrackIdx = self.dawState.numTracks - 1
         }
-        self.osc.send("/live/track/set/selectedTrack", [newTrackIdx])
+        self.osc.send("/live/view/set/selected_track", [newTrackIdx])
     }
     
     @objc func handleTrackNext() {
-        self.osc.send("/live/track/set/selectedTrack", [(self.dawState.selectedTrack + 1) % self.dawState.numTracks])
+        var newTrack = (self.dawState.selectedTrack + 1)
+        if newTrack >= self.dawState.numTracks {
+            newTrack = newTrack - self.dawState.numTracks
+        }
+        self.dawState.selectedTrack = newTrack
+        self.osc.send("/live/view/set/selected_track", [self.dawState.selectedTrack])
+//        self.osc.send("/live/view/set/selected_track", [2])
     }
     
     @objc func handleTrackSolo() {

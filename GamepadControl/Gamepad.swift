@@ -76,15 +76,19 @@ class Gamepad: ObservableObject {
         
         let controller = notification.object as! GCController
         
-        controller.extendedGamepad?.rightShoulder.pressedChangedHandler = { (_, _, _) in
-            let action = AudioControlAction.trackNext
-            action.notify()
+        controller.extendedGamepad?.rightShoulder.pressedChangedHandler = { (_, _, pressed) in
+            if pressed {
+                let action = AudioControlAction.trackNext
+                action.notify()
+            }
         }
         
-        controller.extendedGamepad?.leftShoulder.pressedChangedHandler = { (_, _, _) in
-            self.actionForKeymap(GameControlKeys.L1)
-            let action = AudioControlAction.trackPrevious
-            action.notify()
+        controller.extendedGamepad?.leftShoulder.pressedChangedHandler = { (_, _, pressed) in
+            if pressed {
+                self.actionForKeymap(GameControlKeys.L1)
+                let action = AudioControlAction.trackPrevious
+                action.notify()
+            }
         }
 
         
@@ -95,8 +99,10 @@ class Gamepad: ObservableObject {
         
         controller.extendedGamepad?.dpad.down.pressedChangedHandler = { (button, value, pressed) in
 //            let action = self.keymap[GameControlKeys.DownArrow]
-            let action = AudioControlAction.trackMute
-            action.notify()
+            if pressed {
+                let action = AudioControlAction.trackMute
+                action.notify()
+            }
         }
         
         controller.extendedGamepad?.dpad.up.pressedChangedHandler = { (button, value, pressed) in
