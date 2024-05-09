@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Combine
 
 enum AudioControlAction: String {
     case trackMute, trackSolo, trackArm
@@ -25,20 +26,23 @@ struct TrackState {
     var arm: Bool = false
 }
 
-struct DawState {
+class DawState: ObservableObject {
     var selectedTrack = 0
     var numTracks = 1
-    var tracks: [TrackState]
+    var tracks: [TrackState] = []
+    
+    func setSelectedTrack(_ index: Int) {
+        selectedTrack = index
+    }
 }
 
 class MessageCenter: ObservableObject {
     
-    @ObservedObject var osc = OSC()
-    @State var dawState: DawState
+    var osc = OSC()
+    @EnvironmentObject var dawState: DawState
     
     init() {
         let dummyTrack = TrackState()
-        dawState = DawState(tracks: [dummyTrack])
         
 //        NotificationCenter.default.addObserver(
 //            self,

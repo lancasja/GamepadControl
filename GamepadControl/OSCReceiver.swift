@@ -17,7 +17,7 @@ class OSCReceiver: ObservableObject {
     private let error: OSCAddressSpace.MethodID
     private let mute: OSCAddressSpace.MethodID
     
-    @ObservedObject var messageCenter = MessageCenter()
+//    @EnvironmentObject var dawState: DawState
     
     public init() {
         test = addressSpace.register(localAddress: "/live/test")
@@ -65,7 +65,7 @@ class OSCReceiver: ObservableObject {
     }
     
     private func handleSelectedTrack(index: Int) {
-        self.messageCenter.setSelectedTrack(trackIdx: index)
+//        self.dawState.setSelectedTrack(index)
         print("selected_track: \(index)")
     }
     

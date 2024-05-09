@@ -12,10 +12,12 @@ import SwiftUI
 import SceneKit
 
 struct ContentView: View {
+    @ObservedObject var dawState = DawState()
     @ObservedObject var osc = OSC()
     @ObservedObject var gamepad = Gamepad()
     @ObservedObject var trackModel = TrackViewModel()
     @ObservedObject var messageCenter = MessageCenter()
+
     
     let scene = RoomScene()
     
@@ -24,6 +26,7 @@ struct ContentView: View {
             RoomView()
             TrackView()
         }
+        .environmentObject(dawState)
         .onAppear {
             self.osc.startServer()
             self.osc.send("/live/song/get/num_tracks")
