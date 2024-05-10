@@ -33,6 +33,13 @@ class OSC: ObservableObject {
         print("Sending OSC \(message)")
     }
     
+    func initDawState() {
+        self.send("/live/song/get/num_tracks")
+        self.send("/live/view/start_listen/selected_track")
+        self.send("/live/song/start_listen/mute")
+        
+    }
+    
     func startServer() {
         server.setHandler { message, timeTag in
             do {

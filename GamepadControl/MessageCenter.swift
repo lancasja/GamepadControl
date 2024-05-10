@@ -63,7 +63,7 @@ class MessageCenter: ObservableObject {
         osc = OSC(dawStateInit: dawStateInit)
         dawState = dawStateInit
         
-        let dummyTrack = TrackState()
+//        let dummyTrack = TrackState()
         
 //        NotificationCenter.default.addObserver(
 //            self,
@@ -107,14 +107,22 @@ class MessageCenter: ObservableObject {
             name: Notification.Name(AudioControlAction.trackNext.rawValue),
             object: nil
         )
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(bulkGetTrackInfo),
+            name: Notification.Name("BulkGetTrackInfo"),
+            object: nil
+        )
 
     }
     
     @objc func oscStart() {
         self.osc.startServer()
+        self.osc.initDawState()
         self.osc.send("/live/song/get/num_tracks")
-        self.osc.send("/live/view/start_listen/selected_track")
-        self.osc.send("/live/song/start_listen/mute")
+//        self.osc.send("/live/view/start_listen/selected_track")
+//        self.osc.send("/live/song/start_listen/mute")
     }
     
     @objc func oscStop() {
@@ -150,6 +158,10 @@ class MessageCenter: ObservableObject {
         self.dawState.selectedTrack = newTrack
         self.osc.send("/live/view/set/selected_track", [self.dawState.selectedTrack])
 //        self.osc.send("/live/view/set/selected_track", [2])
+    }
+    
+    @objc func bulkGetTrackInfo() {
+        self.osc.send("/live/song/get/track_data", [0, self.dawState.numTracks-1, "track.mute", "track.name"])
     }
     
     @objc func handleTrackSolo() {

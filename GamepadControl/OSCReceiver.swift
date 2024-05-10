@@ -16,6 +16,7 @@ class OSCReceiver: ObservableObject {
     private let selected_track: OSCAddressSpace.MethodID
     private let error: OSCAddressSpace.MethodID
     private let mute: OSCAddressSpace.MethodID
+    private let bulkTrackInfo: OSCAddressSpace.MethodID
     
     @ObservedObject var dawState: DawState
     
@@ -24,8 +25,9 @@ class OSCReceiver: ObservableObject {
         num_tracks = addressSpace.register(localAddress: "/live/song/get/num_tracks")
         selected_track = addressSpace.register(localAddress: "/live/view/get/selected_track")
         error = addressSpace.register(localAddress: "/live/error")
-        mute = addressSpace.register(localAddress: "/live/track/get/mute")
+        mute = addressSpace.register(localAddress: "/live/song/get/mute")
         dawState = dawStateInit
+        bulkTrackInfo = addressSpace.register(localAddress: "/live/song/get/track_data")
     }
     
     public func handle(message: OSCMessage, timeTag: OSCTimeTag) throws {
@@ -51,6 +53,9 @@ class OSCReceiver: ObservableObject {
                 print("MUTE!!!!????")
                 let muteState = try message.values.masked(Bool.self)
                 self.handleMute(value: muteState)
+            case bulkTrackInfo:
+                print("GETTING BULK TRACK INFO: \(message)")
+                self.handleBulkTrackInfo(value: message)
             default:
                 return
             }
@@ -62,6 +67,11 @@ class OSCReceiver: ObservableObject {
     }
     
     private func handleNumTracks(count: Int) {
+        // figure out if initialized
+        if count != self.dawState.numTracks {
+            self.dawState.setNumTracks(count)
+            NotificationCenter.default.post(name: Notification.Name("BulkGetTrackInfo"), object: nil)
+        }
         self.dawState.setNumTracks(count)
         print("num_tracks: \(count)")
     }
@@ -75,6 +85,10 @@ class OSCReceiver: ObservableObject {
         print("VALUE: \(value)")
         self.dawState.tracks[self.dawState.selectedTrack].muted = value
 //        print("VALUE: \(value)")
+    }
+    
+    private func handleBulkTrackInfo(value: OSCMessage) {
+        print("TODO: set dawState to bulk response: \(value.values)")
     }
 }
 

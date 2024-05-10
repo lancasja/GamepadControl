@@ -8,13 +8,10 @@
 import SceneKit
 import SwiftUI
 
-class TrackObject: SCNNode, ObservableObject {
-    @ObservedObject var trackViewModel = TrackViewModel()
-    
-    @Published var index: Int = 0
-    @Published var size: CGFloat = 0.5
-    @Published var color: NSColor = NSColor.orange
-    @Published var location: SCNVector3 = SCNVector3(0, 5, -5)
+class TrackObject: SCNNode {
+    var size: CGFloat = 0.5
+    var color: NSColor = NSColor.orange
+    var location: SCNVector3 = SCNVector3(0, 5, -5)
     
     func setColor(nsColor: NSColor) {
         color = nsColor
@@ -28,7 +25,6 @@ class TrackObject: SCNNode, ObservableObject {
     
     required init(coder: NSCoder = NSCoder()) {
         super.init()
-        self.index = trackViewModel.index
         self.geometry = TrackGeometry()
         setColor(nsColor: color)
         setLocation(vector3: location)

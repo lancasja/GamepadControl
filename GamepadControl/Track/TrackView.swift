@@ -6,35 +6,19 @@
 //
 
 import SwiftUI
-import Controls
-
-class TrackViewModel: ObservableObject, Identifiable {
-    @Published var index: Int
-    @Published var name: String
-    
-    @Published var mute = false
-    @Published var solo = false
-    @Published var rec = false
-    @Published var gain = 0.0
-    
-    @Published var size = 1
-    @Published var azimuth = 0.0
-    @Published var elevation = 0.0
-    @Published var distance = 0.0
-    
-    init(index: Int = 0, name: String = "track_name") {
-        self.index = index
-        self.name = name
-    }
-}
+import SceneKit
 
 struct TrackView: View {
-    @ObservedObject var model = TrackViewModel()
+    @ObservedObject var model: Track
+    
+    init(_model: Track) {
+        self.model = _model
+    }
     
     var body: some View {
         VStack(alignment: .leading) {
             HStack {
-                Text("\(model.index)")
+                Text("\(model.id)")
                     .foregroundStyle(.black)
                     .padding([.leading, .trailing], 12)
                     .padding([.top, .bottom], 4)
@@ -137,5 +121,5 @@ struct TrackView: View {
 }
 
 #Preview {
-    TrackView()
+    TrackView(_model: Track())
 }

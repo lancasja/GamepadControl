@@ -11,18 +11,27 @@
 import SwiftUI
 import SceneKit
 
+class StateStore: ObservableObject {
+    var tracks: [Track] = [Track(id: 0), Track(id: 1)]
+}
+
 struct ContentView: View {
     @ObservedObject var gamepad = Gamepad()
-    @ObservedObject var trackModel = TrackViewModel()
     @ObservedObject var messageCenter = MessageCenter()
-
+    
+    var store = StateStore()
     
     let scene = RoomScene()
     
     var body: some View {
         ZStack(alignment: .topLeading) {
             RoomView()
-            TrackView()
+            
+            HStack {
+                ForEach(store.tracks) { track in
+                    TrackView(_model: track)
+                }
+            }
         }
         .onAppear {
             self.messageCenter.oscStart()
