@@ -117,3 +117,4 @@ struct MenuBarView: View {
         }.padding([.leading, .trailing])
     }
 }
+
