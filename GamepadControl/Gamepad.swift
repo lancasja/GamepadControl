@@ -13,6 +13,9 @@ enum GameControlKeys: String {
 }
 
 class Gamepad: ObservableObject {
+    @AppStorage("gamepad_connected") var gamepadConnencted: Bool?
+    @AppStorage("gamepad_name") var gamepadName: String?
+    
     struct ButtonElement {
         var id = UUID()
         var offSymbol: String
@@ -63,6 +66,10 @@ class Gamepad: ObservableObject {
         NotificationCenter.default.addObserver(
             forName: .GCControllerDidDisconnect, object: nil, queue: nil, using: didDisconnect
         )
+        
+        gamepadConnencted = false
+        gamepadName = "No gamepad connected"
+        
     }
     
     func actionForKeymap(_ key: GameControlKeys) {
@@ -73,8 +80,11 @@ class Gamepad: ObservableObject {
     func didConnect(_ notification: Notification) {
         print("controller connected")
         self.connected = true
+        gamepadConnencted = true
         
         let controller = notification.object as! GCController
+        
+        gamepadName = controller.vendorName
         
         controller.extendedGamepad?.rightShoulder.pressedChangedHandler = { (_, _, pressed) in
             if pressed {
@@ -115,5 +125,7 @@ class Gamepad: ObservableObject {
     func didDisconnect(_ notification: Notification) {
         print("controller disconnected")
         self.connected = false
+        gamepadConnencted = false
+        gamepadName = "No gamepad connected"
     }
 }

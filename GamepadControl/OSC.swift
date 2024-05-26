@@ -8,6 +8,7 @@ import SwiftUI
 import OSCKit
 
 class OSC: ObservableObject {
+    @AppStorage("live_version") var liveVersion: String?
     @ObservedObject var dawState: DawState
     var client: OSCClient
     var server: OSCServer
@@ -37,6 +38,7 @@ class OSC: ObservableObject {
         self.send("/live/song/get/num_tracks")
         self.send("/live/view/start_listen/selected_track")
         self.send("/live/song/start_listen/mute")
+        self.send("/live/application/get/version")
         
     }
     
@@ -61,5 +63,6 @@ class OSC: ObservableObject {
     
     func stopServer() {
         server.stop()
+        liveVersion = nil
     }
 }

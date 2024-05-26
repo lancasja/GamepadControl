@@ -9,6 +9,8 @@ import SwiftUI
 import OSCKit
 
 class OSCReceiver: ObservableObject {
+    @AppStorage("live_version") var liveVersion: String?
+    
     private let addressSpace = OSCAddressSpace()
 
     private let test: OSCAddressSpace.MethodID
@@ -17,17 +19,32 @@ class OSCReceiver: ObservableObject {
     private let error: OSCAddressSpace.MethodID
     private let mute: OSCAddressSpace.MethodID
     private let bulkTrackInfo: OSCAddressSpace.MethodID
+    private let startup: OSCAddressSpace.MethodID
+    private let average_process_usage: OSCAddressSpace.MethodID
+    private let get_version: OSCAddressSpace.MethodID
     
     @ObservedObject var dawState: DawState
     
     public init(_ dawStateInit: DawState) {
-        test = addressSpace.register(localAddress: "/live/test")
-        num_tracks = addressSpace.register(localAddress: "/live/song/get/num_tracks")
-        selected_track = addressSpace.register(localAddress: "/live/view/get/selected_track")
-        error = addressSpace.register(localAddress: "/live/error")
-        mute = addressSpace.register(localAddress: "/live/song/get/mute")
         dawState = dawStateInit
-        bulkTrackInfo = addressSpace.register(localAddress: "/live/song/get/track_data")
+        get_version =
+            addressSpace.register(localAddress: "/live/application/get/version")
+        test =
+            addressSpace.register(localAddress: "/live/test")
+        num_tracks = 
+            addressSpace.register(localAddress: "/live/song/get/num_tracks")
+        selected_track = 
+            addressSpace.register(localAddress: "/live/view/get/selected_track")
+        error = 
+            addressSpace.register(localAddress: "/live/error")
+        mute = 
+            addressSpace.register(localAddress: "/live/song/get/mute")
+        bulkTrackInfo = 
+            addressSpace.register(localAddress: "/live/song/get/track_data")
+        startup = 
+            addressSpace.register(localAddress: "/live/startup")
+        average_process_usage = 
+            addressSpace.register(localAddress: "/live/application/get/average_process_usage")
     }
     
     public func handle(message: OSCMessage, timeTag: OSCTimeTag) throws {
@@ -40,6 +57,12 @@ class OSCReceiver: ObservableObject {
         
         try ids.forEach { id in
             switch id {
+            case average_process_usage:
+                print(message)
+            case get_version:
+                let value = try message.values.masked(Int.self, Int.self)
+                let version = "\(value.0).\(value.1)"
+                liveVersion = version
             case test:
                 let value = try message.values.masked(String.self)
                 self.handleTest(value: value)
