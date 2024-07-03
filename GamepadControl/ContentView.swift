@@ -36,6 +36,26 @@ struct GamepadButton: View {
     }
 }
 
+struct ParameterView: View {
+    var device: Device
+    
+    init(device: Device) {
+        self.device = device
+        print(device.parameters)
+    }
+    
+    var body: some View {
+        VStack {
+            ForEach(device.parameters) { param in
+                HStack {
+                    Text(param.name)
+                    Text("\(param.value)")
+                }
+            }
+        }
+    }
+}
+
 struct ContentView: View {
     @StateObject private var gamepadManager = GamepadManager.shared
     @StateObject private var dawState = DAWState.shared
@@ -43,15 +63,20 @@ struct ContentView: View {
     var body: some View {
         VStack {
             Text("\(gamepadManager.gamepad?.vendorName ?? "No controller")")
+            
+            Divider()
+            
             HStack {
                 Text(dawState.is_playing ? "Playing" : "Stopped")
                 Text("Current beat: \(dawState.current_beat)")
                 Text(dawState.record_mode ? "Recording" : "")
             }
             
-            HStack {
+            HStack(alignment: .top) {
                 ForEach(dawState.tracks) { track in
                     VStack {
+                        Divider()
+                        
                         Text("\(track.name)")
                             .foregroundStyle(dawState.selectedTrack == track.index ? .blue : .white)
                         
@@ -62,16 +87,19 @@ struct ContentView: View {
                         Text("Pan: \(track.panning)")
                         Text("Vol: \(track.volume)")
                         
-                        ForEach(track.devices) { device in
-                            VStack {
-                                Text("Name: \(device.name ?? "")")
-                                Text("Type: \(device.type ?? 0)")
-                                Text("Class: \(device.class_name ?? "")")
+                        if !track.devices.isEmpty {
+                            Divider()
+                            
+                            ForEach(track.devices) { device in
+                                Text(device.name)
+                                ParameterView(device: device)
                             }
                         }
                     }
                 }
             }
+            
+            Divider()
             
             HStack {
                 VStack {

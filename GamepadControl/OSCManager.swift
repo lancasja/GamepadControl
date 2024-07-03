@@ -27,21 +27,21 @@ enum TrackProps: String, CaseIterable {
 
 struct Parameter: Identifiable {
     let id = UUID()
-    var name: String?
-    var value: Any?
-    var min: Float?
-    var max: Float?
-    var is_quantized: Bool?
-    var value_string: String?
+    var name: String = ""
+    var value: Any = 0
+    var min: Float = 0.0
+    var max: Float = 0.0
+    var is_quantized: Bool = false
+    var value_string: String = ""
 }
 
 struct Device: Identifiable {
     let id = UUID()
-    var name: String?
-    var class_name: String?
-    var type: Int?
-    var num_parameters: Int?
-    var parameters: [Parameter]?
+    var name: String = ""
+    var class_name: String = ""
+    var type: Int = 0
+    var num_parameters: Int = 0
+    var parameters: [Parameter] = []
 }
 
 struct Track: Identifiable {
@@ -247,9 +247,13 @@ class OSCManager: ObservableObject {
                 self.send("/live/track/get/panning", [trackIndex])
                 self.send("/live/track/get/volume", [trackIndex])
                 self.send("/live/track/get/num_devices", [trackIndex])
-//                self.send("/live/track/get/devices/name", [trackIndex])
-//                self.send("/live/track/get/devices/type", [trackIndex])
-//                self.send("/live/track/get/devices/class_name", [trackIndex])
+                
+                self.send("/live/track/start_listen/name", [trackIndex])
+                self.send("/live/track/start_listen/mute", [trackIndex])
+                self.send("/live/track/start_listen/solo", [trackIndex])
+                self.send("/live/track/start_listen/arm", [trackIndex])
+                self.send("/live/track/start_listen/volume", [trackIndex])
+                self.send("/live/track/start_listen/panning", [trackIndex])
             }
             
             // 5. Create local tracks
@@ -276,14 +280,29 @@ class OSCManager: ObservableObject {
                 let values = try message.values.masked(Int.self, Float.self)
                 self.dawState.tracks[values.0].volume = values.1
             } catch {
-                print("Error getting panning: \(error)")
+                print("Error getting volume: \(error)")
             }
         case "/live/track/get/arm":
-            print("arm", message)
+            do {
+                let values = try message.values.masked(Int.self, Bool.self)
+                self.dawState.tracks[values.0].arm = values.1
+            } catch {
+                print("Error getting arm: \(error)")
+            }
         case "/live/track/get/mute":
-            print("mute", message)
+            do {
+                let values = try message.values.masked(Int.self, Bool.self)
+                self.dawState.tracks[values.0].mute = values.1
+            } catch {
+                print("Error getting mute: \(error)")
+            }
         case "/live/track/get/solo":
-            print("mute", message)
+            do {
+                let values = try message.values.masked(Int.self, Bool.self)
+                self.dawState.tracks[values.0].solo = values.1
+            } catch {
+                print("Error getting solo: \(error)")
+            }
         
         // ==== DEVICES ====
         case "/live/track/get/num_devices":
@@ -291,67 +310,122 @@ class OSCManager: ObservableObject {
                 let values = try message.values.masked(Int.self, Int.self)
                 self.dawState.tracks[values.0].num_devices = values.1
                 
-                if values.1 > 0 {
-                    for _ in 0...values.1 {
-                        let device = Device()
-                        self.dawState.tracks[values.0].devices.append(device)
-                    }
-                }
-                
                 self.send("/live/track/get/devices/name", [values.0])
-//                self.send("/live/track/get/devices/type", [values.0])
-//                self.send("/live/track/get/devices/class_name", [values.0])
             } catch {
                 print("Error getting num_devices:", error)
             }
         case "/live/track/get/devices/name":
             if message.values.count > 1 {
-                print(">>> GET DEVICES:", message)
-                
+                guard let trackIndex = message.values[0] as? Int32 else { return }
+
                 message.values.enumerated().forEach { (index, oscValue) in
-                    var trackIndex: Int = 0
-                    var deviceName: String = ""
+                    var device = Device()
                     
                     switch oscValue {
-                    case let val as Int32:
-                        print(val)
-                        trackIndex = Int("\(val)") ?? 0
-                        print(">>>> INDX <<<<", trackIndex)
                     case let val as String:
-                        print(val)
-                        deviceName = val
+                        device.name = val
                     default:
                         break
                     }
                     
                     if index > 0 {
-                        print(trackIndex)
-//                        self.dawState.tracks[trackIndex].devices[index].name = deviceName
+                        self.dawState.tracks[Int(trackIndex)].devices.append(device)
                     }
                 }
                 
-//                values.enumerated().forEach { (index, value) in
-//                    guard let name = value as? String else { return }
-//                    self.dawState.tracks[trackIndex].devices[index].name = name
-//                }
+                self.send("/live/track/get/devices/type", [trackIndex])
             }
         case "/live/track/get/devices/type":
             if message.values.count > 1 {
-                var values = message.values
-                let trackIndex = values.removeFirst()
-                
-                values.enumerated().forEach { (index, value) in
-                    self.dawState.tracks[trackIndex as! Int].devices[index].type = value as? Int
+                guard let trackIndex = message.values[0] as? Int32 else { return }
+
+                message.values.enumerated().forEach { (index, oscValue) in
+                    if index > 0 {
+                        switch oscValue {
+                        case let val as Int32:
+                            self.dawState.tracks[Int(trackIndex)].devices[index - 1].type = Int(val)
+                        default:
+                            break
+                        }
+                    }
                 }
+                
+                self.send("/live/track/get/devices/class_name", [trackIndex])
             }
         case "/live/track/get/devices/class_name":
             if message.values.count > 1 {
-                var values = message.values
-                let trackIndex = values.removeFirst()
-                
-                values.enumerated().forEach { (index, value) in
-                    self.dawState.tracks[trackIndex as! Int].devices[index].class_name = value as? String
+                guard let trackIndex = message.values[0] as? Int32 else { return }
+
+                message.values.enumerated().forEach { (index, oscValue) in
+                    if index > 0 {
+                        switch oscValue {
+                        case let val as String:
+                            let deviceIndex = index - 1
+                            self.dawState.tracks[Int(trackIndex)].devices[deviceIndex].class_name = val
+                            self.send("/live/device/get/parameters/name", [trackIndex, deviceIndex])
+                        default:
+                            break
+                        }
+                    }
                 }
+            }
+        case "/live/device/get/parameters/name":
+            guard let trackIndex = message.values[0] as? Int32 else { return }
+            guard let deviceIndex = message.values[1] as? Int32 else { return }
+            
+            message.values.enumerated().forEach { (index, oscValue) in
+                var param = Parameter()
+                
+                if index > 1 {
+                    switch oscValue {
+                    case let val as String:
+                        param.name = val
+                    default:
+                        break
+                    }
+                    
+                    self.dawState
+                        .tracks[Int(trackIndex)]
+                        .devices[Int(deviceIndex)]
+                        .parameters.append(param)
+                    
+                    self.send("/live/device/start_listen/parameter/name", [trackIndex, deviceIndex, index - 2])
+                    self.send("/live/device/get/parameters/value", [trackIndex, deviceIndex])
+                }
+            }
+        case "/live/device/get/parameters/value":
+            guard let trackIndex = message.values[0] as? Int32 else { return }
+            guard let deviceIndex = message.values[1] as? Int32 else { return }
+            
+            message.values.enumerated().forEach { (index, oscValue) in
+                if index > 1 {
+                    switch oscValue {
+                    case let val as Any:
+                        self.dawState
+                            .tracks[Int(trackIndex)]
+                            .devices[Int(deviceIndex)]
+                            .parameters[index - 2].value = val
+                        
+                        self.send("/live/device/start_listen/parameter/value", [trackIndex, deviceIndex, index - 2])
+                    default:
+                        break
+                    }
+                }
+            }
+        case "/live/device/get/parameter/name":
+            print("!!!! names:", message)
+            do {
+                let values = try message.values.masked(Int.self, Int.self, Int.self, String.self)
+                self.dawState.tracks[values.0].devices[values.1].parameters[values.2].name = values.3
+            } catch {
+                print("Error getting parameter value:", error)
+            }
+        case "/live/device/get/parameter/value":
+            do {
+                let values = try message.values.masked(Int.self, Int.self, Int.self, Float.self)
+                self.dawState.tracks[values.0].devices[values.1].parameters[values.2].value = values.3
+            } catch {
+                print("Error getting parameter value:", error)
             }
         case "/live/device/get/name":
             do {
