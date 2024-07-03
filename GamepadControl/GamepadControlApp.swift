@@ -6,23 +6,13 @@
 //
 
 import SwiftUI
+import SwiftData
 
 @main
-struct GamepadControlApp: App {
-    @AppStorage("showMenuBarExtra") private var showMenuBarExtra = true
-    @AppStorage("showContent") private var showContent = false
-    
+struct GCTestApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
         }
-        
-        MenuBarExtra(
-            "App Menu Bar Extra",
-            systemImage: "waveform.circle",
-            isInserted: $showMenuBarExtra
-        ) {
-            MenuBarView()
-        }.menuBarExtraStyle(.window)
     }
 }

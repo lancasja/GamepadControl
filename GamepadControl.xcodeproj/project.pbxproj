@@ -10,37 +10,25 @@
 		31F23FE22BEC55F400735D88 /* OSCKit in Frameworks */ = {isa = PBXBuildFile; productRef = 31F23FE12BEC55F400735D88 /* OSCKit */; };
 		31F23FE42BEC55F400735D88 /* OSCKitCore in Frameworks */ = {isa = PBXBuildFile; productRef = 31F23FE32BEC55F400735D88 /* OSCKitCore */; };
 		31F23FE72BEC560400735D88 /* AudioKitUI in Frameworks */ = {isa = PBXBuildFile; productRef = 31F23FE62BEC560400735D88 /* AudioKitUI */; };
-		842DD5452BBB641300935F6C /* OSCReceiver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 842DD5442BBB641300935F6C /* OSCReceiver.swift */; };
-		842DD5472BBB643800935F6C /* Gamepad.swift in Sources */ = {isa = PBXBuildFile; fileRef = 842DD5462BBB643800935F6C /* Gamepad.swift */; };
-		842DD5492BBB645300935F6C /* TrackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 842DD5482BBB645300935F6C /* TrackView.swift */; };
-		843926B82BD1277E0063C8DE /* RoomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 843926B72BD1277E0063C8DE /* RoomView.swift */; };
 		845ABC932B8F3D6A00DB1B17 /* NOTES.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845ABC922B8F3D6A00DB1B17 /* NOTES.swift */; };
-		8467F2D62BEDD028003E207E /* Track.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8467F2D52BEDD028003E207E /* Track.swift */; };
-		848051CA2BEC490200B93954 /* TrackObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848051C92BEC490200B93954 /* TrackObject.swift */; };
-		848051CC2BEC495800B93954 /* MessageCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848051CB2BEC495800B93954 /* MessageCenter.swift */; };
 		849282F02B8C83FB00064503 /* GamepadControlApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 849282EF2B8C83FB00064503 /* GamepadControlApp.swift */; };
 		849282F22B8C83FB00064503 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 849282F12B8C83FB00064503 /* ContentView.swift */; };
 		849282F42B8C83FD00064503 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 849282F32B8C83FD00064503 /* Assets.xcassets */; };
 		849282F72B8C83FD00064503 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 849282F62B8C83FD00064503 /* Preview Assets.xcassets */; };
-		8492830E2B8DB44400064503 /* OSC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8492830D2B8DB44400064503 /* OSC.swift */; };
+		BCD718192C34D108006C3146 /* GamepadManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD718182C34D108006C3146 /* GamepadManager.swift */; };
+		BCD7181B2C34D14B006C3146 /* OSCManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD7181A2C34D14B006C3146 /* OSCManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		842DD5442BBB641300935F6C /* OSCReceiver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OSCReceiver.swift; sourceTree = "<group>"; };
-		842DD5462BBB643800935F6C /* Gamepad.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Gamepad.swift; sourceTree = "<group>"; };
-		842DD5482BBB645300935F6C /* TrackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackView.swift; sourceTree = "<group>"; };
-		843926B72BD1277E0063C8DE /* RoomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomView.swift; sourceTree = "<group>"; };
 		845ABC922B8F3D6A00DB1B17 /* NOTES.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NOTES.swift; sourceTree = "<group>"; };
-		8467F2D52BEDD028003E207E /* Track.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Track.swift; sourceTree = "<group>"; };
-		848051C92BEC490200B93954 /* TrackObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackObject.swift; sourceTree = "<group>"; };
-		848051CB2BEC495800B93954 /* MessageCenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageCenter.swift; sourceTree = "<group>"; };
 		849282EC2B8C83FB00064503 /* GamepadControl.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GamepadControl.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		849282EF2B8C83FB00064503 /* GamepadControlApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamepadControlApp.swift; sourceTree = "<group>"; };
 		849282F12B8C83FB00064503 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		849282F32B8C83FD00064503 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		849282F62B8C83FD00064503 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		849282F82B8C83FD00064503 /* GamepadControl.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = GamepadControl.entitlements; sourceTree = "<group>"; };
-		8492830D2B8DB44400064503 /* OSC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OSC.swift; sourceTree = "<group>"; };
+		BCD718182C34D108006C3146 /* GamepadManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamepadManager.swift; sourceTree = "<group>"; };
+		BCD7181A2C34D14B006C3146 /* OSCManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OSCManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,16 +45,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		8467F2D42BEDBD9B003E207E /* Track */ = {
-			isa = PBXGroup;
-			children = (
-				8467F2D52BEDD028003E207E /* Track.swift */,
-				848051C92BEC490200B93954 /* TrackObject.swift */,
-				842DD5482BBB645300935F6C /* TrackView.swift */,
-			);
-			path = Track;
-			sourceTree = "<group>";
-		};
 		849282E32B8C83FB00064503 = {
 			isa = PBXGroup;
 			children = (
@@ -88,12 +66,8 @@
 			children = (
 				849282EF2B8C83FB00064503 /* GamepadControlApp.swift */,
 				849282F12B8C83FB00064503 /* ContentView.swift */,
-				8492830D2B8DB44400064503 /* OSC.swift */,
-				842DD5442BBB641300935F6C /* OSCReceiver.swift */,
-				842DD5462BBB643800935F6C /* Gamepad.swift */,
-				848051CB2BEC495800B93954 /* MessageCenter.swift */,
-				8467F2D42BEDBD9B003E207E /* Track */,
-				843926B72BD1277E0063C8DE /* RoomView.swift */,
+				BCD718182C34D108006C3146 /* GamepadManager.swift */,
+				BCD7181A2C34D14B006C3146 /* OSCManager.swift */,
 				849282F32B8C83FD00064503 /* Assets.xcassets */,
 				849282F82B8C83FD00064503 /* GamepadControl.entitlements */,
 				849282F52B8C83FD00064503 /* Preview Content */,
@@ -190,16 +164,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				849282F22B8C83FB00064503 /* ContentView.swift in Sources */,
-				8467F2D62BEDD028003E207E /* Track.swift in Sources */,
-				843926B82BD1277E0063C8DE /* RoomView.swift in Sources */,
-				848051CA2BEC490200B93954 /* TrackObject.swift in Sources */,
-				842DD5492BBB645300935F6C /* TrackView.swift in Sources */,
-				842DD5472BBB643800935F6C /* Gamepad.swift in Sources */,
+				BCD7181B2C34D14B006C3146 /* OSCManager.swift in Sources */,
+				BCD718192C34D108006C3146 /* GamepadManager.swift in Sources */,
 				849282F02B8C83FB00064503 /* GamepadControlApp.swift in Sources */,
-				848051CC2BEC495800B93954 /* MessageCenter.swift in Sources */,
 				845ABC932B8F3D6A00DB1B17 /* NOTES.swift in Sources */,
-				8492830E2B8DB44400064503 /* OSC.swift in Sources */,
-				842DD5452BBB641300935F6C /* OSCReceiver.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
