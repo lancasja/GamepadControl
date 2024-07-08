@@ -62,6 +62,10 @@ struct ContentView: View {
     
     var body: some View {
         VStack {
+            MixerView()
+            
+            Divider()
+            
             Text("\(gamepadManager.gamepad?.vendorName ?? "No controller")")
             
             Divider()

@@ -147,7 +147,6 @@ class GamepadManager: ObservableObject {
                 let isPressed = gamepad.leftShoulder.isPressed
                 self?.l1Pressed = isPressed
                 if isPressed {
-                    print("input: l1, action: prev_track")
                     if let selectedTrack = self?.dawState.selectedTrack {
                         var nextTrack = selectedTrack - 1
                         if let numTracks = self?.dawState.numTracks {
@@ -163,7 +162,6 @@ class GamepadManager: ObservableObject {
                 let isPressed = gamepad.rightShoulder.isPressed
                 self?.r1Pressed = isPressed
                 if isPressed {
-                    print("input: r1, action: next_track")
                     if let selectedTrack = self?.dawState.selectedTrack {
                         var nextTrack = selectedTrack + 1
                         if let numTracks = self?.dawState.numTracks {

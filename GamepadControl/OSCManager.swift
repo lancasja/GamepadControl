@@ -65,7 +65,7 @@ struct Track: Identifiable {
     var panning: Float = 0.0
     var volume: Float = 0.0
     
-    var num_devices: Int?
+    var num_devices: Int = 0
     var devices: [Device] = []
 }
 
@@ -413,7 +413,6 @@ class OSCManager: ObservableObject {
                 }
             }
         case "/live/device/get/parameter/name":
-            print("!!!! names:", message)
             do {
                 let values = try message.values.masked(Int.self, Int.self, Int.self, String.self)
                 self.dawState.tracks[values.0].devices[values.1].parameters[values.2].name = values.3
