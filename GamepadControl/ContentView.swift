@@ -12,7 +12,7 @@ import SwiftUI
 import SceneKit
 
 class StateStore: ObservableObject {
-    var tracks: [Track] = [Track(id: 0), Track(id: 1)]
+    var tracks: [Track] = []
 }
 
 struct ContentView: View {

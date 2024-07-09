@@ -22,7 +22,7 @@ struct GamepadControlApp: App {
             systemImage: "waveform.circle",
             isInserted: $showMenuBarExtra
         ) {
-            MenuBarView()
+//            MenuBarView()
         }.menuBarExtraStyle(.window)
     }
 }

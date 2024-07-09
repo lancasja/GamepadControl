@@ -111,7 +111,33 @@ class OSCReceiver: ObservableObject {
     }
     
     private func handleBulkTrackInfo(value: OSCMessage) {
-        print("TODO: set dawState to bulk response: \(value.values)")
+        // Ensure the values are in the expected format
+        guard let trackInfoArray = value.values as? [AnyObject] else {
+            print("Unexpected value format: \(value.values)")
+            return
+        }
+        
+        var tracks: [TrackState] = []
+        
+        // Iterate over the array, assuming each track has four consecutive values
+        for i in stride(from: 0, to: trackInfoArray.count, by: 4) {
+            guard i + 3 < trackInfoArray.count,
+                  let name = trackInfoArray[i] as? String,
+                  let muted = trackInfoArray[i + 1] as? Bool,
+                  let armed = trackInfoArray[i + 2] as? Bool,
+                  let solo = trackInfoArray[i + 3] as? Bool else {
+                print("Invalid track info at index \(i)")
+                continue
+            }
+            
+            let trackState = TrackState(name: name, muted: muted, solo: solo, arm: armed)
+            tracks.append(trackState)
+        }
+        
+        // Assign the parsed track states to dawState.tracks
+        self.dawState.tracks = tracks
+        
+        print("Updated dawState with bulk response: \(tracks)")
     }
 }
 
