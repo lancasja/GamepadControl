@@ -176,10 +176,15 @@ class GamepadManager: ObservableObject {
             case gamepad.rightTrigger:
                 let isPressed = gamepad.rightTrigger.isPressed
                 self?.r2Mode = isPressed
+                
             case gamepad.leftThumbstick:
                 guard let r2Mode = self?.r2Mode else { return }
                 guard let selectedTrack = self?.dawState.selectedTrack else { return }
                 guard let volume = self?.dawState.tracks[selectedTrack].volume else { return }
+                guard let devices = self?.dawState.tracks[selectedTrack].devices else { return }
+                
+                let yAxis = gamepad.leftThumbstick.yAxis.value
+                let xAxis = gamepad.leftThumbstick.xAxis.value
                 
                 if r2Mode {
                     var newVol: Float = volume
@@ -199,30 +204,117 @@ class GamepadManager: ObservableObject {
                     self?.oscManager.send("/live/track/set/volume", [selectedTrack, newVol])
                     self?.dawState.tracks[selectedTrack].volume = newVol
                 }
+                
+                if devices.count > 0 {
+                    devices.enumerated().forEach { (deviceIndex, device) in
+                        switch device.name {
+                        case "E4L Mono Panner":
+                            device.parameters.enumerated().forEach { (paramIndex, param) in
+                                switch param.name {
+                                case "Radius":
+                                    if let curVal = param.value as? Float {
+                                        var newVal = curVal
+                                        let step: Float = 0.1
+                                        let deadZone = abs(xAxis) < 0.2
+                                        
+                                        if (yAxis > 0) && deadZone {
+                                            newVal = newVal + step
+                                        }
+                                        
+                                        if (yAxis < 0) && deadZone {
+                                            newVal = newVal - step
+                                        }
+                                        
+                                        self?.oscManager.send(
+                                            "/live/device/set/parameter/value",
+                                            [selectedTrack, deviceIndex, paramIndex, newVal]
+                                        )
+                                    }
+                                default:
+                                    break
+                                }
+                            }
+                        default:
+                            break
+                        }
+                    }
+                }
             case gamepad.rightThumbstick:
                 guard let r2Mode = self?.r2Mode else { return }
                 guard let selectedTrack = self?.dawState.selectedTrack else { return }
-                guard let panning = self?.dawState.tracks[selectedTrack].panning else { return }
+                guard let devices = self?.dawState.tracks[selectedTrack].devices else { return }
                 
+                let yAxis = gamepad.rightThumbstick.yAxis.value
+                let xAxis = gamepad.rightThumbstick.xAxis.value
+                
+                // PANNING
                 if r2Mode {
-                    var newPan: Float = panning
+                    self?.oscManager.send("/live/track/set/panning", [selectedTrack, yAxis])
                     
-                    if gamepad.rightThumbstick.up.isPressed {
-                        if panning < 0.99 {
-                            newPan = panning + 0.01
-                        }
+                    if yAxis >= 1 {
+                        self?.dawState.tracks[selectedTrack].panning = yAxis - 0.01
                     }
                     
-                    if gamepad.rightThumbstick.down.isPressed {
-                        if panning > -0.99 {
-                            newPan = panning - 0.01
-                        }
+                    if yAxis <= -1 {
+                        self?.dawState.tracks[selectedTrack].panning = yAxis + 0.01
                     }
-                    
-                    self?.oscManager.send("/live/track/set/panning", [selectedTrack, newPan])
-                    self?.dawState.tracks[selectedTrack].panning = newPan
                 }
-            
+                
+                // AZIMUTH
+                if devices.count > 0 {
+                    devices.enumerated().forEach { (deviceIndex, device) in
+                        switch device.name {
+                        case "E4L Mono Panner":
+                            device.parameters.enumerated().forEach { (paramIndex, param) in
+                                switch param.name {
+                                case "Azim":
+                                    if let curVal = param.value as? Float {
+                                        var newVal = curVal
+                                        let step: Float = 9.0
+                                        let deadZone = abs(xAxis) < 0.2
+                                        
+                                        if (yAxis > 0) && deadZone {
+                                            newVal = newVal + step
+                                        }
+                                        
+                                        if (yAxis < 0) && deadZone {
+                                            newVal = newVal - step
+                                        }
+                                        
+                                        self?.oscManager.send(
+                                            "/live/device/set/parameter/value",
+                                            [selectedTrack, deviceIndex, paramIndex, newVal]
+                                        )
+                                    }
+                                case "Elev":
+                                    if let curVal = param.value as? Float {
+                                        var newVal = curVal
+                                        let step: Float = 9.0
+                                        let deadZone = abs(yAxis) < 0.2
+                                        
+                                        if (xAxis > 0) && deadZone {
+                                            newVal = newVal + step
+                                        }
+                                        
+                                        if (xAxis < 0) && deadZone {
+                                            newVal = newVal - step
+                                        }
+                                        
+                                        self?.oscManager.send(
+                                            "/live/device/set/parameter/value",
+                                            [selectedTrack, deviceIndex, paramIndex, newVal]
+                                        )
+                                    }
+                                default:
+                                    break
+                                }
+                            }
+                        default:
+                            break
+                        }
+                    }
+                }
+
             default:
                 break
             }

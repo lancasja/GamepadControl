@@ -41,7 +41,7 @@ struct ParameterView: View {
     
     init(device: Device) {
         self.device = device
-        print(device.parameters)
+//        print(device.parameters)
     }
     
     var body: some View {

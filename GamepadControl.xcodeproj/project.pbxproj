@@ -16,6 +16,7 @@
 		849282F42B8C83FD00064503 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 849282F32B8C83FD00064503 /* Assets.xcassets */; };
 		849282F72B8C83FD00064503 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 849282F62B8C83FD00064503 /* Preview Assets.xcassets */; };
 		BC15E7F12C3B320E00F10A57 /* MixerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC15E7F02C3B320E00F10A57 /* MixerView.swift */; };
+		BC4C0DEE2C3CDE0A00651FE9 /* E4LMonoPanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC4C0DED2C3CDE0A00651FE9 /* E4LMonoPanner.swift */; };
 		BCD718192C34D108006C3146 /* GamepadManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD718182C34D108006C3146 /* GamepadManager.swift */; };
 		BCD7181B2C34D14B006C3146 /* OSCManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD7181A2C34D14B006C3146 /* OSCManager.swift */; };
 /* End PBXBuildFile section */
@@ -29,6 +30,7 @@
 		849282F62B8C83FD00064503 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		849282F82B8C83FD00064503 /* GamepadControl.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = GamepadControl.entitlements; sourceTree = "<group>"; };
 		BC15E7F02C3B320E00F10A57 /* MixerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MixerView.swift; sourceTree = "<group>"; };
+		BC4C0DED2C3CDE0A00651FE9 /* E4LMonoPanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = E4LMonoPanner.swift; sourceTree = "<group>"; };
 		BCD718182C34D108006C3146 /* GamepadManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamepadManager.swift; sourceTree = "<group>"; };
 		BCD7181A2C34D14B006C3146 /* OSCManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OSCManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -66,6 +68,7 @@
 		849282EE2B8C83FB00064503 /* GamepadControl */ = {
 			isa = PBXGroup;
 			children = (
+				BC4C0DEC2C3CDDEE00651FE9 /* Maps */,
 				849282EF2B8C83FB00064503 /* GamepadControlApp.swift */,
 				849282F12B8C83FB00064503 /* ContentView.swift */,
 				BCD718182C34D108006C3146 /* GamepadManager.swift */,
@@ -85,6 +88,14 @@
 				849282F62B8C83FD00064503 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		BC4C0DEC2C3CDDEE00651FE9 /* Maps */ = {
+			isa = PBXGroup;
+			children = (
+				BC4C0DED2C3CDE0A00651FE9 /* E4LMonoPanner.swift */,
+			);
+			path = Maps;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -171,6 +182,7 @@
 				BC15E7F12C3B320E00F10A57 /* MixerView.swift in Sources */,
 				BCD718192C34D108006C3146 /* GamepadManager.swift in Sources */,
 				849282F02B8C83FB00064503 /* GamepadControlApp.swift in Sources */,
+				BC4C0DEE2C3CDE0A00651FE9 /* E4LMonoPanner.swift in Sources */,
 				845ABC932B8F3D6A00DB1B17 /* NOTES.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

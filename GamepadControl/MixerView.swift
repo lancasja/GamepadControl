@@ -41,24 +41,36 @@ struct MixerView: View {
             if track.devices.count > 0 {
                 let device = track.devices[0]
                 
-                if device.name == "Audio Effect Rack" {
+                if (device.name == "E4L Mono Panner") || (device.name == "E4L Stereo Panner") {
                     var x: CGFloat = 0
                     var y: CGFloat = 0
                     var z: CGFloat = 0
                     
                     device.parameters.forEach { param in
                         switch param.name {
-                        case "Macro 1":
+                        case "Azim":
                             if let val = param.value as? Float {
-                                x = (CGFloat(val - 1) / 63.0) - 1.0
+                                x = mapRange(
+                                    value: CGFloat(val),
+                                    fromLow: -180.00,
+                                    fromHigh: 180.00,
+                                    toLow: -1.00,
+                                    toHigh: 1.00
+                                )
                             }
-                        case "Macro 2":
+                        case "Elev":
                             if let val = param.value as? Float {
-                                y = (CGFloat(val - 1) / 63.0) - 1.0
+                                y = mapRange(
+                                    value: CGFloat(val),
+                                    fromLow: -90.00,
+                                    fromHigh: 90.00,
+                                    toLow: -1.00,
+                                    toHigh: 1.00
+                                )
                             }
-                        case "Macro 3":
+                        case "Radius":
                             if let val = param.value as? Float {
-                                z = (CGFloat(val - 1) / 63.0) - 1.0
+                                z = CGFloat(val)
                             }
                         default:
                             break
@@ -85,6 +97,10 @@ struct MixerView: View {
         
         return trackNode
     }
+}
+
+func mapRange(value: CGFloat, fromLow: CGFloat, fromHigh: CGFloat, toLow: CGFloat, toHigh: CGFloat) -> CGFloat {
+    return (value - fromLow) * (toHigh - toLow) / (fromHigh - fromLow) + toLow
 }
 
 #Preview {

@@ -146,7 +146,7 @@ class OSCManager: ObservableObject {
     ) {
         let message = OSCMessage(address, values: values)
         try? client.send(message, to: to, port: port)
-        print("Sending OSC \(message)")
+//        print("Sending OSC \(message)")
     }
     
     func handleReceivedMessage(_ message: OSCMessage) {
@@ -160,7 +160,6 @@ class OSCManager: ObservableObject {
                 print("Error getting is_playing:", error)
             }
         case "/live/song/get/current_song_time":
-            print(message.values[0].oscValueToken)
             do {
                 let value = try message.values.masked(Float.self)
                 self.dawState.current_song_time = value
@@ -238,7 +237,8 @@ class OSCManager: ObservableObject {
 //                    case 11: trackData.color = item as! Int
 //                    case 12: trackData.color_index = item as! Int
                     default:
-                        print("Unhandled track data:", item)
+//                        print("Unhandled track data:", item)
+                        break
                     }
                 }
                 
@@ -295,6 +295,14 @@ class OSCManager: ObservableObject {
                 self.dawState.tracks[values.0].mute = values.1
             } catch {
                 print("Error getting mute: \(error)")
+            }
+        case "/live/track/get/name":
+            do {
+                let values = try message.values.masked(Int.self, String.self)
+                print("hello?", values)
+//                if self.dawState.numTracks < values.0
+            } catch {
+                print("Error getting track name: \(error)")
             }
         case "/live/track/get/solo":
             do {
@@ -389,7 +397,6 @@ class OSCManager: ObservableObject {
                         .devices[Int(deviceIndex)]
                         .parameters.append(param)
                     
-                    self.send("/live/device/start_listen/parameter/name", [trackIndex, deviceIndex, index - 2])
                     self.send("/live/device/get/parameters/value", [trackIndex, deviceIndex])
                 }
             }
@@ -412,6 +419,8 @@ class OSCManager: ObservableObject {
                     }
                 }
             }
+        case "/live/device/get/parameter/value_string":
+            break
         case "/live/device/get/parameter/name":
             do {
                 let values = try message.values.masked(Int.self, Int.self, Int.self, String.self)
