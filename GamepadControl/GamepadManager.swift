@@ -56,6 +56,7 @@ class GamepadManager: ObservableObject {
         self.gamepad = gamepad
         print("\(gamepad.vendorName!) connected")
         
+        GCController.shouldMonitorBackgroundEvents = true
         setupGamepadInputHandling(gamepad)
     }
     
