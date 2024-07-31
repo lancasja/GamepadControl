@@ -1,9 +1,9 @@
 import SwiftUI
 
 struct ViewsPicker: View {
-    var options: [CameraView] = CameraView.allCases
+    var options: [CameraPerspective] = CameraPerspective.allCases
     
-    @State var selected: CameraView = .perspective
+    @State var selected: CameraPerspective = .perspective
     
     var body: some View {
         Picker("", selection: $selected) {

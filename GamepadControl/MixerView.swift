@@ -8,34 +8,75 @@
 import SwiftUI
 import SceneKit
 
-struct MixerView: View {
+//enum CameraPerspective: String, CaseIterable {
+//    case perspective, top, left, right, front, back, firstPerson
+//}
+
+enum RoomModel: String {
+    case sphere, box
+}
+
+struct MixerView: View {    
     @StateObject private var dawState = DAWState.shared
+    
+    @State var roomModel: RoomModel = .sphere
+    
+    @State private var cameraNode = SCNNode()
+    @State private var scene = SCNScene()
     
     var body: some View {
         SceneView(
             scene: createScene(),
-            options: [.autoenablesDefaultLighting, .allowsCameraControl]
+            pointOfView: cameraNode,
+            options: [
+                .autoenablesDefaultLighting,
+                .allowsCameraControl,
+                .temporalAntialiasingEnabled
+            ]
         )
     }
+    
     func createScene() -> SCNScene {
-        let scene = SCNScene()
+        
+        // ==== SCENE ====
+        scene = SCNScene()
         scene.background.contents = NSColor.black
         
-        // Sphere geometry
-        let mixSphere = SCNSphere(radius: 1)
         
-        // Sphere material
-        let mixSphereMaterial = SCNMaterial()
-        mixSphereMaterial.fillMode = .lines
-        mixSphereMaterial.diffuse.contents = NSColor.green
-        mixSphereMaterial.isDoubleSided = true
-        mixSphereMaterial.transparency = 0.3
-        mixSphere.materials = [mixSphereMaterial]
+        // ==== WIREFRAME MATERIAL ====
+        let wireframeMaterial = SCNMaterial()
+        wireframeMaterial.fillMode = .lines
+        wireframeMaterial.diffuse.contents = NSColor.systemTeal
+        wireframeMaterial.isDoubleSided = true
+        wireframeMaterial.transparency = 0.3
         
-        // Scene node
+        // ==== ROOM SIZE ====
+        let roomScale:CGFloat = 1
+        
+        // ==== ROOM as SPHERE ====
+        let mixSphere = SCNSphere(radius: roomScale)
+        mixSphere.materials = [wireframeMaterial]
         let mixSphereNode = SCNNode(geometry: mixSphere)
-        scene.rootNode.addChildNode(mixSphereNode)
         
+        // ==== ROOM as BOX ====
+        let mixBox = SCNBox(
+            width: roomScale,
+            height: roomScale,
+            length: roomScale,
+            chamferRadius: 0.0
+        )
+        mixBox.materials = [wireframeMaterial]
+        let mixBoxNode = SCNNode(geometry: mixBox)
+        
+        // ==== CHOOSE ROOM as SPHERE or BOX ====
+        switch(self.roomModel) {
+        case .sphere:
+            scene.rootNode.addChildNode(mixSphereNode)
+        case .box:
+            scene.rootNode.addChildNode(mixBoxNode)
+        }
+        
+        // ==== RENDER Track Objects ====
         self.dawState.tracks.forEach { track in
             
             if track.devices.count > 0 {
@@ -84,8 +125,6 @@ struct MixerView: View {
                 }
             }
         }
-        
-        
         
         return scene
     }

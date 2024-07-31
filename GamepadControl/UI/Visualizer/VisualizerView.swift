@@ -1,14 +1,10 @@
 import SwiftUI
 
-enum CameraView: String, CaseIterable {
-    case perspective, top, left, right, front, back
-}
-
 struct VisualizerView: View {
     
-    var defaultCamera: CameraView
+    var defaultCamera: CameraPerspective
     
-    init(defaultCamera: CameraView = .perspective) {
+    init(defaultCamera: CameraPerspective = .perspective) {
         self.defaultCamera = defaultCamera
     }
     

@@ -7,15 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		31F23FE22BEC55F400735D88 /* OSCKit in Frameworks */ = {isa = PBXBuildFile; productRef = 31F23FE12BEC55F400735D88 /* OSCKit */; };
-		31F23FE42BEC55F400735D88 /* OSCKitCore in Frameworks */ = {isa = PBXBuildFile; productRef = 31F23FE32BEC55F400735D88 /* OSCKitCore */; };
-		31F23FE72BEC560400735D88 /* AudioKitUI in Frameworks */ = {isa = PBXBuildFile; productRef = 31F23FE62BEC560400735D88 /* AudioKitUI */; };
 		845ABC932B8F3D6A00DB1B17 /* NOTES.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845ABC922B8F3D6A00DB1B17 /* NOTES.swift */; };
 		849282F02B8C83FB00064503 /* GamepadControlApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 849282EF2B8C83FB00064503 /* GamepadControlApp.swift */; };
 		849282F22B8C83FB00064503 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 849282F12B8C83FB00064503 /* ContentView.swift */; };
 		849282F42B8C83FD00064503 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 849282F32B8C83FD00064503 /* Assets.xcassets */; };
 		849282F72B8C83FD00064503 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 849282F62B8C83FD00064503 /* Preview Assets.xcassets */; };
 		BC15E7F12C3B320E00F10A57 /* MixerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC15E7F02C3B320E00F10A57 /* MixerView.swift */; };
+		BC347E442C50B9810020888C /* PlaygroundViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC347E432C50B9810020888C /* PlaygroundViews.swift */; };
 		BC3EDA982C3E19C900AE444A /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3EDA972C3E19C900AE444A /* MainView.swift */; };
 		BC3EDA9A2C3E289100AE444A /* VisualizerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3EDA992C3E289100AE444A /* VisualizerView.swift */; };
 		BC3EDA9D2C3E28FA00AE444A /* SceneToggle.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3EDA9C2C3E28FA00AE444A /* SceneToggle.swift */; };
@@ -24,6 +22,9 @@
 		BC4C0DEE2C3CDE0A00651FE9 /* E4LMonoPanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC4C0DED2C3CDE0A00651FE9 /* E4LMonoPanner.swift */; };
 		BCD718192C34D108006C3146 /* GamepadManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD718182C34D108006C3146 /* GamepadManager.swift */; };
 		BCD7181B2C34D14B006C3146 /* OSCManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD7181A2C34D14B006C3146 /* OSCManager.swift */; };
+		BCF9EB882C4742DA007B57C1 /* OSCKit in Frameworks */ = {isa = PBXBuildFile; productRef = BCF9EB872C4742DA007B57C1 /* OSCKit */; };
+		BCF9EB8A2C4742DA007B57C1 /* OSCKitCore in Frameworks */ = {isa = PBXBuildFile; productRef = BCF9EB892C4742DA007B57C1 /* OSCKitCore */; };
+		BCF9EB8D2C4742F1007B57C1 /* AudioKit in Frameworks */ = {isa = PBXBuildFile; productRef = BCF9EB8C2C4742F1007B57C1 /* AudioKit */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -35,6 +36,7 @@
 		849282F62B8C83FD00064503 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		849282F82B8C83FD00064503 /* GamepadControl.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = GamepadControl.entitlements; sourceTree = "<group>"; };
 		BC15E7F02C3B320E00F10A57 /* MixerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MixerView.swift; sourceTree = "<group>"; };
+		BC347E432C50B9810020888C /* PlaygroundViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaygroundViews.swift; sourceTree = "<group>"; };
 		BC3EDA972C3E19C900AE444A /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		BC3EDA992C3E289100AE444A /* VisualizerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualizerView.swift; sourceTree = "<group>"; };
 		BC3EDA9C2C3E28FA00AE444A /* SceneToggle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneToggle.swift; sourceTree = "<group>"; };
@@ -51,9 +53,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				31F23FE42BEC55F400735D88 /* OSCKitCore in Frameworks */,
-				31F23FE72BEC560400735D88 /* AudioKitUI in Frameworks */,
-				31F23FE22BEC55F400735D88 /* OSCKit in Frameworks */,
+				BCF9EB8D2C4742F1007B57C1 /* AudioKit in Frameworks */,
+				BCF9EB8A2C4742DA007B57C1 /* OSCKitCore in Frameworks */,
+				BCF9EB882C4742DA007B57C1 /* OSCKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -109,6 +111,7 @@
 				BC3EDA972C3E19C900AE444A /* MainView.swift */,
 				BC3EDAA22C3E2E4000AE444A /* TaskBar.swift */,
 				BC3EDA9B2C3E28D200AE444A /* Visualizer */,
+				BC347E432C50B9810020888C /* PlaygroundViews.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -148,9 +151,9 @@
 			);
 			name = GamepadControl;
 			packageProductDependencies = (
-				31F23FE12BEC55F400735D88 /* OSCKit */,
-				31F23FE32BEC55F400735D88 /* OSCKitCore */,
-				31F23FE62BEC560400735D88 /* AudioKitUI */,
+				BCF9EB872C4742DA007B57C1 /* OSCKit */,
+				BCF9EB892C4742DA007B57C1 /* OSCKitCore */,
+				BCF9EB8C2C4742F1007B57C1 /* AudioKit */,
 			);
 			productName = GamepadControl;
 			productReference = 849282EC2B8C83FB00064503 /* GamepadControl.app */;
@@ -181,8 +184,8 @@
 			);
 			mainGroup = 849282E32B8C83FB00064503;
 			packageReferences = (
-				31F23FE02BEC55F400735D88 /* XCRemoteSwiftPackageReference "OSCKit" */,
-				31F23FE52BEC560300735D88 /* XCRemoteSwiftPackageReference "AudioKitUI" */,
+				BCF9EB862C4742DA007B57C1 /* XCRemoteSwiftPackageReference "OSCKit" */,
+				BCF9EB8B2C4742F1007B57C1 /* XCRemoteSwiftPackageReference "audiokit" */,
 			);
 			productRefGroup = 849282ED2B8C83FB00064503 /* Products */;
 			projectDirPath = "";
@@ -217,6 +220,7 @@
 				BC3EDA9F2C3E291900AE444A /* ViewsPicker.swift in Sources */,
 				BCD7181B2C34D14B006C3146 /* OSCManager.swift in Sources */,
 				BC15E7F12C3B320E00F10A57 /* MixerView.swift in Sources */,
+				BC347E442C50B9810020888C /* PlaygroundViews.swift in Sources */,
 				BCD718192C34D108006C3146 /* GamepadManager.swift in Sources */,
 				BC3EDA9D2C3E28FA00AE444A /* SceneToggle.swift in Sources */,
 				849282F02B8C83FB00064503 /* GamepadControlApp.swift in Sources */,
@@ -365,6 +369,8 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = GamepadControl/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Steller Gamepad Control";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -395,6 +401,8 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = GamepadControl/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Steller Gamepad Control";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -432,7 +440,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		31F23FE02BEC55F400735D88 /* XCRemoteSwiftPackageReference "OSCKit" */ = {
+		BCF9EB862C4742DA007B57C1 /* XCRemoteSwiftPackageReference "OSCKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/orchetect/OSCKit";
 			requirement = {
@@ -440,31 +448,31 @@
 				minimumVersion = 0.5.1;
 			};
 		};
-		31F23FE52BEC560300735D88 /* XCRemoteSwiftPackageReference "AudioKitUI" */ = {
+		BCF9EB8B2C4742F1007B57C1 /* XCRemoteSwiftPackageReference "audiokit" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/AudioKit/AudioKitUI";
+			repositoryURL = "https://github.com/audiokit/audiokit/";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 0.3.7;
+				minimumVersion = 5.6.4;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		31F23FE12BEC55F400735D88 /* OSCKit */ = {
+		BCF9EB872C4742DA007B57C1 /* OSCKit */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 31F23FE02BEC55F400735D88 /* XCRemoteSwiftPackageReference "OSCKit" */;
+			package = BCF9EB862C4742DA007B57C1 /* XCRemoteSwiftPackageReference "OSCKit" */;
 			productName = OSCKit;
 		};
-		31F23FE32BEC55F400735D88 /* OSCKitCore */ = {
+		BCF9EB892C4742DA007B57C1 /* OSCKitCore */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 31F23FE02BEC55F400735D88 /* XCRemoteSwiftPackageReference "OSCKit" */;
+			package = BCF9EB862C4742DA007B57C1 /* XCRemoteSwiftPackageReference "OSCKit" */;
 			productName = OSCKitCore;
 		};
-		31F23FE62BEC560400735D88 /* AudioKitUI */ = {
+		BCF9EB8C2C4742F1007B57C1 /* AudioKit */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 31F23FE52BEC560300735D88 /* XCRemoteSwiftPackageReference "AudioKitUI" */;
-			productName = AudioKitUI;
+			package = BCF9EB8B2C4742F1007B57C1 /* XCRemoteSwiftPackageReference "audiokit" */;
+			productName = AudioKit;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
