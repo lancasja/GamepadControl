@@ -22,9 +22,9 @@
 		BC4C0DEE2C3CDE0A00651FE9 /* E4LMonoPanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC4C0DED2C3CDE0A00651FE9 /* E4LMonoPanner.swift */; };
 		BCD718192C34D108006C3146 /* GamepadManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD718182C34D108006C3146 /* GamepadManager.swift */; };
 		BCD7181B2C34D14B006C3146 /* OSCManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD7181A2C34D14B006C3146 /* OSCManager.swift */; };
-		BCF9EB882C4742DA007B57C1 /* OSCKit in Frameworks */ = {isa = PBXBuildFile; productRef = BCF9EB872C4742DA007B57C1 /* OSCKit */; };
-		BCF9EB8A2C4742DA007B57C1 /* OSCKitCore in Frameworks */ = {isa = PBXBuildFile; productRef = BCF9EB892C4742DA007B57C1 /* OSCKitCore */; };
-		BCF9EB8D2C4742F1007B57C1 /* AudioKit in Frameworks */ = {isa = PBXBuildFile; productRef = BCF9EB8C2C4742F1007B57C1 /* AudioKit */; };
+		BCDA352E2C6C044100C01BFB /* AudioKit in Frameworks */ = {isa = PBXBuildFile; productRef = BCDA352D2C6C044100C01BFB /* AudioKit */; };
+		BCDA35312C6C045700C01BFB /* OSCKit in Frameworks */ = {isa = PBXBuildFile; productRef = BCDA35302C6C045700C01BFB /* OSCKit */; };
+		BCDA35332C6C045700C01BFB /* OSCKitCore in Frameworks */ = {isa = PBXBuildFile; productRef = BCDA35322C6C045700C01BFB /* OSCKitCore */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -53,9 +53,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BCF9EB8D2C4742F1007B57C1 /* AudioKit in Frameworks */,
-				BCF9EB8A2C4742DA007B57C1 /* OSCKitCore in Frameworks */,
-				BCF9EB882C4742DA007B57C1 /* OSCKit in Frameworks */,
+				BCDA352E2C6C044100C01BFB /* AudioKit in Frameworks */,
+				BCDA35312C6C045700C01BFB /* OSCKit in Frameworks */,
+				BCDA35332C6C045700C01BFB /* OSCKitCore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -151,9 +151,9 @@
 			);
 			name = GamepadControl;
 			packageProductDependencies = (
-				BCF9EB872C4742DA007B57C1 /* OSCKit */,
-				BCF9EB892C4742DA007B57C1 /* OSCKitCore */,
-				BCF9EB8C2C4742F1007B57C1 /* AudioKit */,
+				BCDA352D2C6C044100C01BFB /* AudioKit */,
+				BCDA35302C6C045700C01BFB /* OSCKit */,
+				BCDA35322C6C045700C01BFB /* OSCKitCore */,
 			);
 			productName = GamepadControl;
 			productReference = 849282EC2B8C83FB00064503 /* GamepadControl.app */;
@@ -184,8 +184,8 @@
 			);
 			mainGroup = 849282E32B8C83FB00064503;
 			packageReferences = (
-				BCF9EB862C4742DA007B57C1 /* XCRemoteSwiftPackageReference "OSCKit" */,
-				BCF9EB8B2C4742F1007B57C1 /* XCRemoteSwiftPackageReference "audiokit" */,
+				BCDA352C2C6C044100C01BFB /* XCRemoteSwiftPackageReference "audiokit" */,
+				BCDA352F2C6C045700C01BFB /* XCRemoteSwiftPackageReference "OSCKit" */,
 			);
 			productRefGroup = 849282ED2B8C83FB00064503 /* Products */;
 			projectDirPath = "";
@@ -440,15 +440,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		BCF9EB862C4742DA007B57C1 /* XCRemoteSwiftPackageReference "OSCKit" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/orchetect/OSCKit";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.5.1;
-			};
-		};
-		BCF9EB8B2C4742F1007B57C1 /* XCRemoteSwiftPackageReference "audiokit" */ = {
+		BCDA352C2C6C044100C01BFB /* XCRemoteSwiftPackageReference "audiokit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/audiokit/audiokit/";
 			requirement = {
@@ -456,23 +448,31 @@
 				minimumVersion = 5.6.4;
 			};
 		};
+		BCDA352F2C6C045700C01BFB /* XCRemoteSwiftPackageReference "OSCKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/orchetect/OSCKit";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.5.1;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		BCF9EB872C4742DA007B57C1 /* OSCKit */ = {
+		BCDA352D2C6C044100C01BFB /* AudioKit */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = BCF9EB862C4742DA007B57C1 /* XCRemoteSwiftPackageReference "OSCKit" */;
+			package = BCDA352C2C6C044100C01BFB /* XCRemoteSwiftPackageReference "audiokit" */;
+			productName = AudioKit;
+		};
+		BCDA35302C6C045700C01BFB /* OSCKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BCDA352F2C6C045700C01BFB /* XCRemoteSwiftPackageReference "OSCKit" */;
 			productName = OSCKit;
 		};
-		BCF9EB892C4742DA007B57C1 /* OSCKitCore */ = {
+		BCDA35322C6C045700C01BFB /* OSCKitCore */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = BCF9EB862C4742DA007B57C1 /* XCRemoteSwiftPackageReference "OSCKit" */;
+			package = BCDA352F2C6C045700C01BFB /* XCRemoteSwiftPackageReference "OSCKit" */;
 			productName = OSCKitCore;
-		};
-		BCF9EB8C2C4742F1007B57C1 /* AudioKit */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = BCF9EB8B2C4742F1007B57C1 /* XCRemoteSwiftPackageReference "audiokit" */;
-			productName = AudioKit;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

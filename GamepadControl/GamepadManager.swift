@@ -8,6 +8,20 @@
 import SwiftUI
 import GameController
 
+func convertRange(value: Double) -> Double {
+        let inputStart = -1.0
+        let inputEnd = 1.0
+        let outputStart = -180.0
+        let outputEnd = 180.0
+        
+        let inputRange = inputEnd - inputStart
+        let outputRange = outputEnd - outputStart
+        
+        let scaledValue = (value - inputStart) / inputRange
+        return outputStart + (scaledValue * outputRange)
+    }
+
+
 class GamepadManager: ObservableObject {
     static let shared = GamepadManager()
     
@@ -209,6 +223,16 @@ class GamepadManager: ObservableObject {
                 if devices.count > 0 {
                     devices.enumerated().forEach { (deviceIndex, device) in
                         switch device.name {
+                        case "360 WalkMix Creator":
+                            let azim = convertRange(value: Double(gamepad.leftThumbstick.xAxis.value))
+                            let elev = convertRange(value: Double(gamepad.rightThumbstick.yAxis.value))
+                            
+                            device.parameters.enumerated().forEach { (paramIndex, param) in
+                                if param.name.contains("Azimuth") {
+                                    print(param.value)
+                                    self?.oscManager.send("/live/device/set/parameter/value", [selectedTrack, deviceIndex, paramIndex, azim])
+                                }
+                            }
                         case "E4L Mono Panner":
                             device.parameters.enumerated().forEach { (paramIndex, param) in
                                 switch param.name {
