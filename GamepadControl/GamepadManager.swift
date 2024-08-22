@@ -28,22 +28,9 @@ class GamepadManager: ObservableObject {
     @ObservedObject var oscManager = OSCManager.shared
     @ObservedObject var dawState = DAWState.shared
     
-    @Published var gamepad: GCController?
+    @Published var vendorName: String?
     
-    @Published var xButtonPressed: Bool = false
-    @Published var circleButtonPressed: Bool = false
-    @Published var squareButtonPressed: Bool = false
-    @Published var triangleButtonPressed: Bool = false
-    
-    @Published var dpadUpPressed: Bool = false
-    @Published var dpadRightPressed: Bool = false
-    @Published var dpadDownPressed: Bool = false
-    @Published var dpadLeftPressed: Bool = false
-    
-    @Published var l1Pressed: Bool = false
-    @Published var r1Pressed: Bool = false
-    
-    @Published var r2Mode: Bool = false
+    @State private var r2Mode = false
     
     init() {
         setupGamepadObservers()
@@ -66,284 +53,136 @@ class GamepadManager: ObservableObject {
     }
     
     @objc func gamepadConnected(_ notification: Notification) {
-        guard let gamepad = notification.object as? GCController else { return }
-        self.gamepad = gamepad
+        guard let gamepad = notification.object as? GCController else {
+            print("Error getting gamepad")
+            return
+        }
+
+        self.vendorName = gamepad.vendorName!
+        
         print("\(gamepad.vendorName!) connected")
         
         GCController.shouldMonitorBackgroundEvents = true
-        setupGamepadInputHandling(gamepad)
+        
+        guard let input = gamepad.physicalInputProfile as? GCDualSenseGamepad else {
+            print("Error getting gamepad input")
+            return
+        }
+        
+        // Cross
+        input.buttonA.valueChangedHandler = { element, value, pressed in
+            print("\(element.localizedName!) \(pressed ? "pressed" : "released")")
+        }
+        
+        // Circle
+        input.buttonB.valueChangedHandler = { element, value, pressed in
+            print("\(element.localizedName!) \(pressed ? "pressed" : "released")")
+        }
+        
+        // Square
+        input.buttonX.valueChangedHandler = { element, value, pressed in
+            print("\(element.localizedName!) \(pressed ? "pressed" : "released")")
+        }
+        
+        // Triangle
+        input.buttonY.valueChangedHandler = { element, value, pressed in
+            print("\(element.localizedName!) \(pressed ? "pressed" : "released")")
+        }
+        
+        // Dpad Up
+        input.dpad.up.valueChangedHandler = { element, value, pressed in
+            print("\(element.localizedName!) \(pressed ? "pressed" : "released")")
+        }
+        
+        // Dpad Down
+        input.dpad.down.valueChangedHandler = { element, value, pressed in
+            print("\(element.localizedName!) \(pressed ? "pressed" : "released")")
+        }
+        
+        // Dpad Left
+        input.dpad.left.valueChangedHandler = { element, value, pressed in
+            print("\(element.localizedName!) \(pressed ? "pressed" : "released")")
+        }
+        
+        // Dpad Right
+        input.dpad.right.valueChangedHandler = { element, value, pressed in
+            print("\(element.localizedName!) \(pressed ? "pressed" : "released")")
+        }
+        
+        // L1
+        input.leftShoulder.valueChangedHandler = { element, value, pressed in
+            print("\(element.localizedName!) \(pressed ? "pressed" : "released")")
+        }
+        
+        // R1
+        input.rightShoulder.valueChangedHandler = { element, value, pressed in
+            print("\(element.localizedName!) \(pressed ? "pressed" : "released")")
+        }
+        
+        // L2
+        input.leftTrigger.valueChangedHandler = { element, value, pressed in
+            print("\(element.localizedName!) \(pressed ? "pressed" : "released") \(value)")
+        }
+        
+        // R2
+        input.rightTrigger.valueChangedHandler = { element, value, pressed in
+            print("\(element.localizedName!) \(pressed ? "pressed" : "released") \(value)")
+        }
+        
+        // Left Stick Button (L3)
+        input.leftThumbstickButton?.valueChangedHandler = { element, value, pressed in
+            print("\(element.localizedName!) \(pressed ? "pressed" : "released")")
+        }
+        
+        // Right Stick Button (R3)
+        input.rightThumbstickButton?.valueChangedHandler = { element, value, pressed in
+            print("\(element.localizedName!) \(pressed ? "pressed" : "released")")
+        }
+        
+        // Left Thumbstick X
+        input.leftThumbstick.xAxis.valueChangedHandler = { element, value in
+            print("\(element.localizedName!) \(value)")
+        }
+        
+        // Left Thumbstick Y
+        input.leftThumbstick.yAxis.valueChangedHandler = { element, value in
+            print("\(element.localizedName!) \(value)")
+        }
+        
+        // Right Thumbstick X
+        input.rightThumbstick.xAxis.valueChangedHandler = { element, value in
+            print("\(element.localizedName!) \(value)")
+        }
+        
+        // Right Thumbstick Y
+        input.rightThumbstick.yAxis.valueChangedHandler = { element, value in
+            print("\(element.localizedName!) \(value)")
+        }
+        
+        // Options Button
+        input.buttonOptions?.valueChangedHandler = { element, value, pressed in
+            print("\(element.localizedName!) \(pressed ? "pressed" : "released")")
+        }
+        
+        // Create Button
+        input.buttonMenu.valueChangedHandler = { element, value, pressed in
+            print("\(element.localizedName!) \(pressed ? "pressed" : "released")")
+        }
+        
+        // PS Button
+        input.buttonHome?.valueChangedHandler = { element, value, pressed in
+            print("\(element.localizedName!) \(pressed ? "pressed" : "released")")
+        }
+        
+        // Touchpad Button
+        input.touchpadButton.valueChangedHandler = { element, value, pressed in
+            print("\(element.localizedName!) \(pressed ? "pressed" : "released")")
+        }
     }
     
     @objc func gamepadDisconnected(_ notification: Notification) {
-        self.gamepad = nil
+        self.vendorName = nil
         print("Gamepad diconnected")
-    }
-
-    func setupGamepadInputHandling(_ gamepad: GCController) {
-        gamepad.extendedGamepad?.valueChangedHandler = {
-            [weak self] (extGamepad: GCExtendedGamepad, element: GCControllerElement) in
-                self?.handleGamepadInput(gamepad: extGamepad, element: element)
-        }
-    }
-    
-    func handleGamepadInput(gamepad: GCExtendedGamepad, element: GCControllerElement) {
-        DispatchQueue.main.async { [weak self] in
-            
-            switch element {
-            case gamepad.buttonA:
-                let isPressed = gamepad.buttonA.isPressed
-                self?.xButtonPressed = isPressed
-                if isPressed {
-                    guard let is_playing = self?.dawState.is_playing else { return }
-                    
-                    if is_playing {
-                        self?.oscManager.send("/live/song/stop_playing")
-                    } else {
-                        self?.oscManager.send("/live/song/continue_playing")
-                    }
-                }
-            case gamepad.buttonB:
-                let isPressed = gamepad.buttonB.isPressed
-                self?.circleButtonPressed = isPressed
-                if isPressed {
-                    guard let record_mode = self?.dawState.record_mode else { return }
-                    self?.dawState.record_mode = !record_mode
-                    self?.oscManager.send("/live/song/set/record_mode", [!record_mode])
-                }
-            case gamepad.buttonX:
-                let isPressed = gamepad.buttonX.isPressed
-                self?.squareButtonPressed = isPressed
-                if isPressed {
-                    guard let is_playing = self?.dawState.is_playing else { return }
-                    
-                    if is_playing {
-                        self?.oscManager.send("/live/song/stop_playing")
-                    }
-                    
-                    self?.oscManager.send("/live/song/set/current_song_time", [0])
-                }
-            case gamepad.buttonY:
-                let isPressed = gamepad.buttonY.isPressed
-                self?.triangleButtonPressed = isPressed
-                if isPressed {
-                    guard let selectedTrack = self?.dawState.selectedTrack else { return }
-                    guard let arm = self?.dawState.tracks[selectedTrack].arm else { return }
-                    self?.dawState.tracks[selectedTrack].arm = !arm
-                    self?.oscManager.send("/live/track/set/arm", [selectedTrack, !arm])
-                }
-            case gamepad.dpad:
-                self?.dpadDownPressed = gamepad.dpad.down.isPressed
-                if gamepad.dpad.down.isPressed {
-                    guard let selectedTrack = self?.dawState.selectedTrack else { return }
-                    guard let mute = self?.dawState.tracks[selectedTrack].mute else { return }
-                    self?.dawState.tracks[selectedTrack].mute = !mute
-                    self?.oscManager.send("/live/track/set/mute", [selectedTrack, !mute])
-                }
-                
-                self?.dpadUpPressed = gamepad.dpad.up.isPressed
-                if gamepad.dpad.up.isPressed {
-                    guard let selectedTrack = self?.dawState.selectedTrack else { return }
-                    guard let solo = self?.dawState.tracks[selectedTrack].solo else { return }
-                    self?.dawState.tracks[selectedTrack].solo = !solo
-                    self?.oscManager.send("/live/track/set/solo", [selectedTrack, !solo])
-                }
-                
-                self?.dpadLeftPressed = gamepad.dpad.left.isPressed
-                if gamepad.dpad.left.isPressed {
-                    self?.oscManager.send("/live/song/undo")
-                }
-                
-                self?.dpadRightPressed = gamepad.dpad.right.isPressed
-                if gamepad.dpad.right.isPressed {
-                    self?.oscManager.send("/live/song/redo")
-                }
-                
-            case gamepad.leftShoulder:
-                let isPressed = gamepad.leftShoulder.isPressed
-                self?.l1Pressed = isPressed
-                if isPressed {
-                    if let selectedTrack = self?.dawState.selectedTrack {
-                        var nextTrack = selectedTrack - 1
-                        if let numTracks = self?.dawState.numTracks {
-                            if nextTrack < 0 {
-                                nextTrack = numTracks - 1
-                            }
-                        }
-                        self?.dawState.selectedTrack = nextTrack
-                        self?.oscManager.send("/live/view/set/selected_track", [nextTrack])
-                    }
-                }
-            case gamepad.rightShoulder:
-                let isPressed = gamepad.rightShoulder.isPressed
-                self?.r1Pressed = isPressed
-                if isPressed {
-                    if let selectedTrack = self?.dawState.selectedTrack {
-                        var nextTrack = selectedTrack + 1
-                        if let numTracks = self?.dawState.numTracks {
-                            if nextTrack >= numTracks {
-                                nextTrack = nextTrack - numTracks
-                            }
-                        }
-                        self?.dawState.selectedTrack = nextTrack
-                        self?.oscManager.send("/live/view/set/selected_track", [nextTrack])
-                    }
-                }
-            case gamepad.rightTrigger:
-                let isPressed = gamepad.rightTrigger.isPressed
-                self?.r2Mode = isPressed
-                
-            case gamepad.leftThumbstick:
-                guard let r2Mode = self?.r2Mode else { return }
-                guard let selectedTrack = self?.dawState.selectedTrack else { return }
-                guard let volume = self?.dawState.tracks[selectedTrack].volume else { return }
-                guard let devices = self?.dawState.tracks[selectedTrack].devices else { return }
-                
-                let yAxis = gamepad.leftThumbstick.yAxis.value
-                let xAxis = gamepad.leftThumbstick.xAxis.value
-                
-                if r2Mode {
-                    var newVol: Float = volume
-                    
-                    if gamepad.leftThumbstick.up.isPressed {
-                        if volume < 1 {
-                            newVol = volume + 0.01
-                        }
-                    }
-                    
-                    if gamepad.leftThumbstick.down.isPressed {
-                        if volume > 0 {
-                            newVol = volume - 0.01
-                        }
-                    }
-                    
-                    self?.oscManager.send("/live/track/set/volume", [selectedTrack, newVol])
-                    self?.dawState.tracks[selectedTrack].volume = newVol
-                }
-                
-                if devices.count > 0 {
-                    devices.enumerated().forEach { (deviceIndex, device) in
-                        switch device.name {
-                        case "360 WalkMix Creator":
-                            let azim = convertRange(value: Double(gamepad.leftThumbstick.xAxis.value))
-                            let elev = convertRange(value: Double(gamepad.rightThumbstick.yAxis.value))
-                            
-                            device.parameters.enumerated().forEach { (paramIndex, param) in
-                                if param.name.contains("Azimuth") {
-                                    print(param.value)
-                                    self?.oscManager.send("/live/device/set/parameter/value", [selectedTrack, deviceIndex, paramIndex, azim])
-                                }
-                            }
-                        case "E4L Mono Panner":
-                            device.parameters.enumerated().forEach { (paramIndex, param) in
-                                switch param.name {
-                                case "Radius":
-                                    if let curVal = param.value as? Float {
-                                        var newVal = curVal
-                                        let step: Float = 0.1
-                                        let deadZone = abs(xAxis) < 0.2
-                                        
-                                        if (yAxis > 0) && deadZone {
-                                            newVal = newVal + step
-                                        }
-                                        
-                                        if (yAxis < 0) && deadZone {
-                                            newVal = newVal - step
-                                        }
-                                        
-                                        self?.oscManager.send(
-                                            "/live/device/set/parameter/value",
-                                            [selectedTrack, deviceIndex, paramIndex, newVal]
-                                        )
-                                    }
-                                default:
-                                    break
-                                }
-                            }
-                        default:
-                            break
-                        }
-                    }
-                }
-            case gamepad.rightThumbstick:
-                guard let r2Mode = self?.r2Mode else { return }
-                guard let selectedTrack = self?.dawState.selectedTrack else { return }
-                guard let devices = self?.dawState.tracks[selectedTrack].devices else { return }
-                
-                let yAxis = gamepad.rightThumbstick.yAxis.value
-                let xAxis = gamepad.rightThumbstick.xAxis.value
-                
-                // PANNING
-                if r2Mode {
-                    self?.oscManager.send("/live/track/set/panning", [selectedTrack, yAxis])
-                    
-                    if yAxis >= 1 {
-                        self?.dawState.tracks[selectedTrack].panning = yAxis - 0.01
-                    }
-                    
-                    if yAxis <= -1 {
-                        self?.dawState.tracks[selectedTrack].panning = yAxis + 0.01
-                    }
-                }
-                
-                // AZIMUTH
-                if devices.count > 0 {
-                    devices.enumerated().forEach { (deviceIndex, device) in
-                        switch device.name {
-                        case "E4L Mono Panner":
-                            device.parameters.enumerated().forEach { (paramIndex, param) in
-                                switch param.name {
-                                case "Azim":
-                                    if let curVal = param.value as? Float {
-                                        var newVal = curVal
-                                        let step: Float = 9.0
-                                        let deadZone = abs(xAxis) < 0.2
-                                        
-                                        if (yAxis > 0) && deadZone {
-                                            newVal = newVal + step
-                                        }
-                                        
-                                        if (yAxis < 0) && deadZone {
-                                            newVal = newVal - step
-                                        }
-                                        
-                                        self?.oscManager.send(
-                                            "/live/device/set/parameter/value",
-                                            [selectedTrack, deviceIndex, paramIndex, newVal]
-                                        )
-                                    }
-                                case "Elev":
-                                    if let curVal = param.value as? Float {
-                                        var newVal = curVal
-                                        let step: Float = 9.0
-                                        let deadZone = abs(yAxis) < 0.2
-                                        
-                                        if (xAxis > 0) && deadZone {
-                                            newVal = newVal + step
-                                        }
-                                        
-                                        if (xAxis < 0) && deadZone {
-                                            newVal = newVal - step
-                                        }
-                                        
-                                        self?.oscManager.send(
-                                            "/live/device/set/parameter/value",
-                                            [selectedTrack, deviceIndex, paramIndex, newVal]
-                                        )
-                                    }
-                                default:
-                                    break
-                                }
-                            }
-                        default:
-                            break
-                        }
-                    }
-                }
-
-            default:
-                break
-            }
-        }
     }
 }
 

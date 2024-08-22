@@ -57,16 +57,16 @@ struct ParameterView: View {
 }
 
 struct ContentView: View {
-    @StateObject private var gamepadManager = GamepadManager.shared
+    @EnvironmentObject var gamepadManager: GamepadManager
     @StateObject private var dawState = DAWState.shared
     
     var body: some View {
         VStack {
-//            MixerView()
+            MixerView()
             
             Divider()
             
-            Text("\(gamepadManager.gamepad?.vendorName ?? "No controller")")
+            Text("\(gamepadManager.vendorName ?? "No controller")")
             
             Divider()
             
@@ -105,42 +105,42 @@ struct ContentView: View {
             
             Divider()
             
-            HStack {
-                VStack {
-                    GamepadButton(symbol: .circle, isPressed: gamepadManager.circleButtonPressed)
-                    GamepadButton(symbol: .square, isPressed: gamepadManager.squareButtonPressed)
-                    GamepadButton(symbol: .triangle, isPressed: gamepadManager.triangleButtonPressed)
-                    GamepadButton(symbol: .x, isPressed: gamepadManager.xButtonPressed)
-                }
-                
-                VStack {
-                    
-                    ZStack {
-                        if gamepadManager.dpadUpPressed {
-                            GamepadButton(symbol: .dpadUp)
-                        }
-                        
-                        if gamepadManager.dpadDownPressed {
-                            GamepadButton(symbol: .dpadDown)
-                        }
-                        
-                        if gamepadManager.dpadLeftPressed {
-                            GamepadButton(symbol: .dpadLeft)
-                        }
-                        
-                        if gamepadManager.dpadRightPressed {
-                            GamepadButton(symbol: .dpadRight)
-                        }
-                        
-                        GamepadButton(symbol: .dpad)
-                    }
-                }
-                
-                VStack {
-                    GamepadButton(symbol: .l1, isPressed: gamepadManager.l1Pressed)
-                    GamepadButton(symbol: .r1, isPressed: gamepadManager.r1Pressed)
-                }
-            }
+//            HStack {
+//                VStack {
+//                    GamepadButton(symbol: .circle, isPressed: gamepadManager.circleButtonPressed)
+//                    GamepadButton(symbol: .square, isPressed: gamepadManager.squareButtonPressed)
+//                    GamepadButton(symbol: .triangle, isPressed: gamepadManager.triangleButtonPressed)
+//                    GamepadButton(symbol: .x, isPressed: gamepadManager.xButtonPressed)
+//                }
+//                
+//                VStack {
+//                    
+//                    ZStack {
+//                        if gamepadManager.dpadUpPressed {
+//                            GamepadButton(symbol: .dpadUp)
+//                        }
+//                        
+//                        if gamepadManager.dpadDownPressed {
+//                            GamepadButton(symbol: .dpadDown)
+//                        }
+//                        
+//                        if gamepadManager.dpadLeftPressed {
+//                            GamepadButton(symbol: .dpadLeft)
+//                        }
+//                        
+//                        if gamepadManager.dpadRightPressed {
+//                            GamepadButton(symbol: .dpadRight)
+//                        }
+//                        
+//                        GamepadButton(symbol: .dpad)
+//                    }
+//                }
+//                
+//                VStack {
+//                    GamepadButton(symbol: .l1, isPressed: gamepadManager.l1Pressed)
+//                    GamepadButton(symbol: .r1, isPressed: gamepadManager.r1Pressed)
+//                }
+//            }
         }
         .padding()
     }
