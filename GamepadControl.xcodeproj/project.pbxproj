@@ -20,11 +20,13 @@
 		BC3EDA9F2C3E291900AE444A /* ViewsPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3EDA9E2C3E291900AE444A /* ViewsPicker.swift */; };
 		BC3EDAA32C3E2E4000AE444A /* TaskBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3EDAA22C3E2E4000AE444A /* TaskBar.swift */; };
 		BC4C0DEE2C3CDE0A00651FE9 /* E4LMonoPanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC4C0DED2C3CDE0A00651FE9 /* E4LMonoPanner.swift */; };
+		BC7264072C772483008B9883 /* OSCKit in Frameworks */ = {isa = PBXBuildFile; productRef = BC7264062C772483008B9883 /* OSCKit */; };
+		BC7264092C772483008B9883 /* OSCKitCore in Frameworks */ = {isa = PBXBuildFile; productRef = BC7264082C772483008B9883 /* OSCKitCore */; };
+		BC72640C2C77248A008B9883 /* AudioKit in Frameworks */ = {isa = PBXBuildFile; productRef = BC72640B2C77248A008B9883 /* AudioKit */; };
+		BC72640F2C7724C4008B9883 /* MenuBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC72640D2C7724C4008B9883 /* MenuBarView.swift */; };
+		BC7264102C7724C4008B9883 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC72640E2C7724C4008B9883 /* AppDelegate.swift */; };
 		BCD718192C34D108006C3146 /* GamepadManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD718182C34D108006C3146 /* GamepadManager.swift */; };
 		BCD7181B2C34D14B006C3146 /* OSCManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD7181A2C34D14B006C3146 /* OSCManager.swift */; };
-		BCDA352E2C6C044100C01BFB /* AudioKit in Frameworks */ = {isa = PBXBuildFile; productRef = BCDA352D2C6C044100C01BFB /* AudioKit */; };
-		BCDA35312C6C045700C01BFB /* OSCKit in Frameworks */ = {isa = PBXBuildFile; productRef = BCDA35302C6C045700C01BFB /* OSCKit */; };
-		BCDA35332C6C045700C01BFB /* OSCKitCore in Frameworks */ = {isa = PBXBuildFile; productRef = BCDA35322C6C045700C01BFB /* OSCKitCore */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -43,6 +45,8 @@
 		BC3EDA9E2C3E291900AE444A /* ViewsPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewsPicker.swift; sourceTree = "<group>"; };
 		BC3EDAA22C3E2E4000AE444A /* TaskBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskBar.swift; sourceTree = "<group>"; };
 		BC4C0DED2C3CDE0A00651FE9 /* E4LMonoPanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = E4LMonoPanner.swift; sourceTree = "<group>"; };
+		BC72640D2C7724C4008B9883 /* MenuBarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuBarView.swift; sourceTree = "<group>"; };
+		BC72640E2C7724C4008B9883 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BCD718182C34D108006C3146 /* GamepadManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamepadManager.swift; sourceTree = "<group>"; };
 		BCD7181A2C34D14B006C3146 /* OSCManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OSCManager.swift; sourceTree = "<group>"; };
 		BCF9EB852C473759007B57C1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -53,9 +57,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BCDA352E2C6C044100C01BFB /* AudioKit in Frameworks */,
-				BCDA35312C6C045700C01BFB /* OSCKit in Frameworks */,
-				BCDA35332C6C045700C01BFB /* OSCKitCore in Frameworks */,
+				BC72640C2C77248A008B9883 /* AudioKit in Frameworks */,
+				BC7264092C772483008B9883 /* OSCKitCore in Frameworks */,
+				BC7264072C772483008B9883 /* OSCKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -93,6 +97,8 @@
 				849282F52B8C83FD00064503 /* Preview Content */,
 				845ABC922B8F3D6A00DB1B17 /* NOTES.swift */,
 				BC15E7F02C3B320E00F10A57 /* MixerView.swift */,
+				BC72640E2C7724C4008B9883 /* AppDelegate.swift */,
+				BC72640D2C7724C4008B9883 /* MenuBarView.swift */,
 			);
 			path = GamepadControl;
 			sourceTree = "<group>";
@@ -151,9 +157,9 @@
 			);
 			name = GamepadControl;
 			packageProductDependencies = (
-				BCDA352D2C6C044100C01BFB /* AudioKit */,
-				BCDA35302C6C045700C01BFB /* OSCKit */,
-				BCDA35322C6C045700C01BFB /* OSCKitCore */,
+				BC7264062C772483008B9883 /* OSCKit */,
+				BC7264082C772483008B9883 /* OSCKitCore */,
+				BC72640B2C77248A008B9883 /* AudioKit */,
 			);
 			productName = GamepadControl;
 			productReference = 849282EC2B8C83FB00064503 /* GamepadControl.app */;
@@ -184,8 +190,8 @@
 			);
 			mainGroup = 849282E32B8C83FB00064503;
 			packageReferences = (
-				BCDA352C2C6C044100C01BFB /* XCRemoteSwiftPackageReference "audiokit" */,
-				BCDA352F2C6C045700C01BFB /* XCRemoteSwiftPackageReference "OSCKit" */,
+				BC7264052C772483008B9883 /* XCRemoteSwiftPackageReference "OSCKit" */,
+				BC72640A2C77248A008B9883 /* XCRemoteSwiftPackageReference "audiokit" */,
 			);
 			productRefGroup = 849282ED2B8C83FB00064503 /* Products */;
 			projectDirPath = "";
@@ -216,12 +222,14 @@
 				BC3EDAA32C3E2E4000AE444A /* TaskBar.swift in Sources */,
 				849282F22B8C83FB00064503 /* ContentView.swift in Sources */,
 				BC3EDA9A2C3E289100AE444A /* VisualizerView.swift in Sources */,
+				BC7264102C7724C4008B9883 /* AppDelegate.swift in Sources */,
 				BC3EDA982C3E19C900AE444A /* MainView.swift in Sources */,
 				BC3EDA9F2C3E291900AE444A /* ViewsPicker.swift in Sources */,
 				BCD7181B2C34D14B006C3146 /* OSCManager.swift in Sources */,
 				BC15E7F12C3B320E00F10A57 /* MixerView.swift in Sources */,
 				BC347E442C50B9810020888C /* PlaygroundViews.swift in Sources */,
 				BCD718192C34D108006C3146 /* GamepadManager.swift in Sources */,
+				BC72640F2C7724C4008B9883 /* MenuBarView.swift in Sources */,
 				BC3EDA9D2C3E28FA00AE444A /* SceneToggle.swift in Sources */,
 				849282F02B8C83FB00064503 /* GamepadControlApp.swift in Sources */,
 				BC4C0DEE2C3CDE0A00651FE9 /* E4LMonoPanner.swift in Sources */,
@@ -440,15 +448,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		BCDA352C2C6C044100C01BFB /* XCRemoteSwiftPackageReference "audiokit" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/audiokit/audiokit/";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 5.6.4;
-			};
-		};
-		BCDA352F2C6C045700C01BFB /* XCRemoteSwiftPackageReference "OSCKit" */ = {
+		BC7264052C772483008B9883 /* XCRemoteSwiftPackageReference "OSCKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/orchetect/OSCKit";
 			requirement = {
@@ -456,23 +456,31 @@
 				minimumVersion = 0.5.1;
 			};
 		};
+		BC72640A2C77248A008B9883 /* XCRemoteSwiftPackageReference "audiokit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/audiokit/audiokit/";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.6.4;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		BCDA352D2C6C044100C01BFB /* AudioKit */ = {
+		BC7264062C772483008B9883 /* OSCKit */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = BCDA352C2C6C044100C01BFB /* XCRemoteSwiftPackageReference "audiokit" */;
-			productName = AudioKit;
-		};
-		BCDA35302C6C045700C01BFB /* OSCKit */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = BCDA352F2C6C045700C01BFB /* XCRemoteSwiftPackageReference "OSCKit" */;
+			package = BC7264052C772483008B9883 /* XCRemoteSwiftPackageReference "OSCKit" */;
 			productName = OSCKit;
 		};
-		BCDA35322C6C045700C01BFB /* OSCKitCore */ = {
+		BC7264082C772483008B9883 /* OSCKitCore */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = BCDA352F2C6C045700C01BFB /* XCRemoteSwiftPackageReference "OSCKit" */;
+			package = BC7264052C772483008B9883 /* XCRemoteSwiftPackageReference "OSCKit" */;
 			productName = OSCKitCore;
+		};
+		BC72640B2C77248A008B9883 /* AudioKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BC72640A2C77248A008B9883 /* XCRemoteSwiftPackageReference "audiokit" */;
+			productName = AudioKit;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

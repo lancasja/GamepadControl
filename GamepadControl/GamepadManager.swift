@@ -31,6 +31,7 @@ class GamepadManager: ObservableObject {
     @Published var vendorName: String?
     
     @State private var r2Mode = false
+    @State private var leftStickYValue: Float = 0
     
     init() {
         setupGamepadObservers()
@@ -72,31 +73,37 @@ class GamepadManager: ObservableObject {
         // Cross
         input.buttonA.valueChangedHandler = { element, value, pressed in
             print("\(element.localizedName!) \(pressed ? "pressed" : "released")")
+            // play/continue
         }
         
         // Circle
         input.buttonB.valueChangedHandler = { element, value, pressed in
             print("\(element.localizedName!) \(pressed ? "pressed" : "released")")
+            // record
         }
         
         // Square
         input.buttonX.valueChangedHandler = { element, value, pressed in
             print("\(element.localizedName!) \(pressed ? "pressed" : "released")")
+            // pause/stop
         }
         
         // Triangle
         input.buttonY.valueChangedHandler = { element, value, pressed in
             print("\(element.localizedName!) \(pressed ? "pressed" : "released")")
+            // arm
         }
         
         // Dpad Up
         input.dpad.up.valueChangedHandler = { element, value, pressed in
             print("\(element.localizedName!) \(pressed ? "pressed" : "released")")
+            //solo
         }
         
         // Dpad Down
         input.dpad.down.valueChangedHandler = { element, value, pressed in
             print("\(element.localizedName!) \(pressed ? "pressed" : "released")")
+            // mute
         }
         
         // Dpad Left
@@ -112,11 +119,13 @@ class GamepadManager: ObservableObject {
         // L1
         input.leftShoulder.valueChangedHandler = { element, value, pressed in
             print("\(element.localizedName!) \(pressed ? "pressed" : "released")")
+            // previous track
         }
         
         // R1
         input.rightShoulder.valueChangedHandler = { element, value, pressed in
             print("\(element.localizedName!) \(pressed ? "pressed" : "released")")
+            // next track
         }
         
         // L2
@@ -127,6 +136,7 @@ class GamepadManager: ObservableObject {
         // R2
         input.rightTrigger.valueChangedHandler = { element, value, pressed in
             print("\(element.localizedName!) \(pressed ? "pressed" : "released") \(value)")
+            self.r2Mode = pressed
         }
         
         // Left Stick Button (L3)
@@ -139,24 +149,30 @@ class GamepadManager: ObservableObject {
             print("\(element.localizedName!) \(pressed ? "pressed" : "released")")
         }
         
-        // Left Thumbstick X
+        // Left Stick X
         input.leftThumbstick.xAxis.valueChangedHandler = { element, value in
             print("\(element.localizedName!) \(value)")
+            // azimuth
         }
         
-        // Left Thumbstick Y
+        // Left Stick Y
         input.leftThumbstick.yAxis.valueChangedHandler = { element, value in
             print("\(element.localizedName!) \(value)")
+            
+            if self.r2Mode {
+                print("Gain: \(value)")
+            }
         }
         
-        // Right Thumbstick X
+        // Right Stick X
         input.rightThumbstick.xAxis.valueChangedHandler = { element, value in
             print("\(element.localizedName!) \(value)")
         }
         
-        // Right Thumbstick Y
+        // Right Stick Y
         input.rightThumbstick.yAxis.valueChangedHandler = { element, value in
             print("\(element.localizedName!) \(value)")
+            // elevation
         }
         
         // Options Button
@@ -177,6 +193,10 @@ class GamepadManager: ObservableObject {
         // Touchpad Button
         input.touchpadButton.valueChangedHandler = { element, value, pressed in
             print("\(element.localizedName!) \(pressed ? "pressed" : "released")")
+        }
+        
+        input.touchpadPrimary.xAxis.valueChangedHandler = { element, value in
+            print("\(element.localizedName!) \(value)")
         }
     }
     
