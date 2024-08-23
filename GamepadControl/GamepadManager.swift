@@ -11,45 +11,45 @@ import GameController
 class GamepadManager: ObservableObject {
     @StateObject private var oscManager = OSCManager.shared
     
-    var vendorName: String?
+    @Published var vendorName: String?
     
-    var r2Mode = false
-    var l2Mode = false
+    @Published var r2Mode = false
+    @Published var l2Mode = false
     
-    var leftShoulderPressed = false
-    var rightShoulderPressed = false
+    @Published var leftShoulderPressed = false
+    @Published var rightShoulderPressed = false
     
-    var leftTriggerValue: Float = 0
-    var rightTriggerValue: Float = 0
+    @Published var leftTriggerValue: Float = 0
+    @Published var rightTriggerValue: Float = 0
     
-    var leftStickXValue: Float = 0
-    var leftStickYValue: Float = 0
-    var rightStickXValue: Float = 0
-    var rightStickYValue: Float = 0
+    @Published var leftStickXValue: Float = 0
+    @Published var leftStickYValue: Float = 0
+    @Published var rightStickXValue: Float = 0
+    @Published var rightStickYValue: Float = 0
     
-    var leftStickPressed = false
-    var rightStickPressed = false
+    @Published var leftStickPressed = false
+    @Published var rightStickPressed = false
     
-    var dpadUpPressed = false
-    var dpadDownPressed = false
-    var dpadLeftPressed = false
-    var dpadRightPressed = false
+    @Published var dpadUpPressed = false
+    @Published var dpadDownPressed = false
+    @Published var dpadLeftPressed = false
+    @Published var dpadRightPressed = false
     
-    var crossPressed = false
-    var circlePressed = false
-    var squarePressed = false
-    var trianglePressed = false
+    @Published var crossPressed = false
+    @Published var circlePressed = false
+    @Published var squarePressed = false
+    @Published var trianglePressed = false
     
-    var optionsPressed = false
-    var menuPressed = false
-    var homePressed = false
+    @Published var optionsPressed = false
+    @Published var menuPressed = false
+    @Published var homePressed = false
     
-    var tpadPressed = false
+    @Published var tpadPressed = false
     
-    var tpadPrimaryXValue: Float = 0
-    var tpadPrimaryYValue: Float = 0
-    var tpadSecondaryXValue: Float = 0
-    var tpadSecondaryYValue: Float = 0
+    @Published var tpadPrimaryXValue: Float = 0
+    @Published var tpadPrimaryYValue: Float = 0
+    @Published var tpadSecondaryXValue: Float = 0
+    @Published var tpadSecondaryYValue: Float = 0
     
     init() {
         NotificationCenter.default.addObserver(
