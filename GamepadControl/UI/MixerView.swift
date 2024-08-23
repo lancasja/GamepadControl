@@ -17,7 +17,7 @@ enum RoomModel: String {
 }
 
 struct MixerView: View {    
-    @StateObject private var dawState = DAWState.shared
+    @State private var dawState = DAWState()
     
     @State var roomModel: RoomModel = .sphere
     

@@ -11,7 +11,7 @@ import SwiftUI
 struct GCTestApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     
-    @StateObject var gamepad = GamepadManager()
+    @StateObject private var gamepad = GamepadManager()
     
     var body: some Scene {
         Window("Visualizer", id: "visualizer") {
@@ -24,4 +24,8 @@ struct GCTestApp: App {
             Image(systemName: "gamecontroller\(gamepad.vendorName != nil ? ".fill" : "")")
         }
     }
+}
+
+class DawAPI {
+    
 }

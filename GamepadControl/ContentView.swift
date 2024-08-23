@@ -12,27 +12,26 @@ import SwiftUI
 import SwiftData
 import GameController
 
-enum ButtonTypes: String {
-    case x = "xmark.circle"
-    case circle = "circle.circle"
-    case square = "square.circle"
-    case triangle = "triangle.circle"
-    case dpad = "dpad"
-    case dpadLeft = "dpad.left.filled"
-    case dpadUp = "dpad.up.filled"
-    case dpadRight = "dpad.right.filled"
-    case dpadDown = "dpad.down.filled"
-    case l1 = "l1.button.roundedbottom.horizontal"
-    case r1 = "r1.button.roundedbottom.horizontal"
-}
-
 struct GamepadButton: View {
+    enum ButtonTypes: String {
+        case x = "xmark.circle"
+        case circle = "circle.circle"
+        case square = "square.circle"
+        case triangle = "triangle.circle"
+        case dpad = "dpad"
+        case dpadLeft = "dpad.left.filled"
+        case dpadUp = "dpad.up.filled"
+        case dpadRight = "dpad.right.filled"
+        case dpadDown = "dpad.down.filled"
+        case l1 = "l1.button.roundedbottom.horizontal"
+        case r1 = "r1.button.roundedbottom.horizontal"
+    }
+    
     var symbol: ButtonTypes = .circle
     var isPressed: Bool = false
     
     var body: some View {
         Image(systemName: "\(symbol.rawValue)\(isPressed ? ".fill" : "")")
-            
     }
 }
 
@@ -58,7 +57,7 @@ struct ParameterView: View {
 
 struct ContentView: View {
     @EnvironmentObject var gamepadManager: GamepadManager
-    @StateObject private var dawState = DAWState.shared
+    @State var dawState = DAWState()
     
     var body: some View {
         VStack {
@@ -105,42 +104,42 @@ struct ContentView: View {
             
             Divider()
             
-//            HStack {
-//                VStack {
-//                    GamepadButton(symbol: .circle, isPressed: gamepadManager.circleButtonPressed)
-//                    GamepadButton(symbol: .square, isPressed: gamepadManager.squareButtonPressed)
-//                    GamepadButton(symbol: .triangle, isPressed: gamepadManager.triangleButtonPressed)
-//                    GamepadButton(symbol: .x, isPressed: gamepadManager.xButtonPressed)
-//                }
-//                
-//                VStack {
-//                    
-//                    ZStack {
-//                        if gamepadManager.dpadUpPressed {
-//                            GamepadButton(symbol: .dpadUp)
-//                        }
-//                        
-//                        if gamepadManager.dpadDownPressed {
-//                            GamepadButton(symbol: .dpadDown)
-//                        }
-//                        
-//                        if gamepadManager.dpadLeftPressed {
-//                            GamepadButton(symbol: .dpadLeft)
-//                        }
-//                        
-//                        if gamepadManager.dpadRightPressed {
-//                            GamepadButton(symbol: .dpadRight)
-//                        }
-//                        
-//                        GamepadButton(symbol: .dpad)
-//                    }
-//                }
-//                
-//                VStack {
-//                    GamepadButton(symbol: .l1, isPressed: gamepadManager.l1Pressed)
-//                    GamepadButton(symbol: .r1, isPressed: gamepadManager.r1Pressed)
-//                }
-//            }
+            HStack {
+                VStack {
+                    GamepadButton(symbol: .circle, isPressed: gamepadManager.circlePressed)
+                    GamepadButton(symbol: .square, isPressed: gamepadManager.squarePressed)
+                    GamepadButton(symbol: .triangle, isPressed: gamepadManager.trianglePressed)
+                    GamepadButton(symbol: .x, isPressed: gamepadManager.crossPressed)
+                }
+                
+                VStack {
+                    
+                    ZStack {
+                        if gamepadManager.dpadUpPressed {
+                            GamepadButton(symbol: .dpadUp)
+                        }
+                        
+                        if gamepadManager.dpadDownPressed {
+                            GamepadButton(symbol: .dpadDown)
+                        }
+                        
+                        if gamepadManager.dpadLeftPressed {
+                            GamepadButton(symbol: .dpadLeft)
+                        }
+                        
+                        if gamepadManager.dpadRightPressed {
+                            GamepadButton(symbol: .dpadRight)
+                        }
+                        
+                        GamepadButton(symbol: .dpad)
+                    }
+                }
+                
+                VStack {
+                    GamepadButton(symbol: .l1, isPressed: gamepadManager.leftShoulderPressed)
+                    GamepadButton(symbol: .r1, isPressed: gamepadManager.rightShoulderPressed)
+                }
+            }
         }
         .padding()
     }

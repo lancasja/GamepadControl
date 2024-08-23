@@ -5,7 +5,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
     @AppStorage("showWindow") var showWindow = false
     
     func applicationDidFinishLaunching(_ notification: Notification) {
-        
         // Close main window on startup
         NSApp.windows.forEach { window in
             if (window.identifier?.rawValue == "visualizer") {

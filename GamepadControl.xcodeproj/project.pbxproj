@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		845ABC932B8F3D6A00DB1B17 /* NOTES.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845ABC922B8F3D6A00DB1B17 /* NOTES.swift */; };
 		849282F02B8C83FB00064503 /* GamepadControlApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 849282EF2B8C83FB00064503 /* GamepadControlApp.swift */; };
 		849282F22B8C83FB00064503 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 849282F12B8C83FB00064503 /* ContentView.swift */; };
 		849282F42B8C83FD00064503 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 849282F32B8C83FD00064503 /* Assets.xcassets */; };
@@ -25,12 +24,13 @@
 		BC72640C2C77248A008B9883 /* AudioKit in Frameworks */ = {isa = PBXBuildFile; productRef = BC72640B2C77248A008B9883 /* AudioKit */; };
 		BC72640F2C7724C4008B9883 /* MenuBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC72640D2C7724C4008B9883 /* MenuBarView.swift */; };
 		BC7264102C7724C4008B9883 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC72640E2C7724C4008B9883 /* AppDelegate.swift */; };
+		BCD0B6E92C786464003B49D3 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD0B6E82C786464003B49D3 /* Utils.swift */; };
+		BCD0B6EB2C786660003B49D3 /* Track.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD0B6EA2C786660003B49D3 /* Track.swift */; };
 		BCD718192C34D108006C3146 /* GamepadManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD718182C34D108006C3146 /* GamepadManager.swift */; };
 		BCD7181B2C34D14B006C3146 /* OSCManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD7181A2C34D14B006C3146 /* OSCManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		845ABC922B8F3D6A00DB1B17 /* NOTES.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NOTES.swift; sourceTree = "<group>"; };
 		849282EC2B8C83FB00064503 /* GamepadControl.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GamepadControl.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		849282EF2B8C83FB00064503 /* GamepadControlApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamepadControlApp.swift; sourceTree = "<group>"; };
 		849282F12B8C83FB00064503 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -47,6 +47,8 @@
 		BC4C0DED2C3CDE0A00651FE9 /* E4LMonoPanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = E4LMonoPanner.swift; sourceTree = "<group>"; };
 		BC72640D2C7724C4008B9883 /* MenuBarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuBarView.swift; sourceTree = "<group>"; };
 		BC72640E2C7724C4008B9883 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		BCD0B6E82C786464003B49D3 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
+		BCD0B6EA2C786660003B49D3 /* Track.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Track.swift; sourceTree = "<group>"; };
 		BCD718182C34D108006C3146 /* GamepadManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamepadManager.swift; sourceTree = "<group>"; };
 		BCD7181A2C34D14B006C3146 /* OSCManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OSCManager.swift; sourceTree = "<group>"; };
 		BCF9EB852C473759007B57C1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -88,17 +90,17 @@
 				BCF9EB852C473759007B57C1 /* Info.plist */,
 				BC3EDA962C3E196900AE444A /* UI */,
 				BC4C0DEC2C3CDDEE00651FE9 /* Maps */,
+				BC72640E2C7724C4008B9883 /* AppDelegate.swift */,
 				849282EF2B8C83FB00064503 /* GamepadControlApp.swift */,
-				849282F12B8C83FB00064503 /* ContentView.swift */,
 				BCD718182C34D108006C3146 /* GamepadManager.swift */,
 				BCD7181A2C34D14B006C3146 /* OSCManager.swift */,
+				BCD0B6EA2C786660003B49D3 /* Track.swift */,
+				BC72640D2C7724C4008B9883 /* MenuBarView.swift */,
+				849282F12B8C83FB00064503 /* ContentView.swift */,
+				BCD0B6E82C786464003B49D3 /* Utils.swift */,
 				849282F32B8C83FD00064503 /* Assets.xcassets */,
 				849282F82B8C83FD00064503 /* GamepadControl.entitlements */,
 				849282F52B8C83FD00064503 /* Preview Content */,
-				845ABC922B8F3D6A00DB1B17 /* NOTES.swift */,
-				BC15E7F02C3B320E00F10A57 /* MixerView.swift */,
-				BC72640E2C7724C4008B9883 /* AppDelegate.swift */,
-				BC72640D2C7724C4008B9883 /* MenuBarView.swift */,
 			);
 			path = GamepadControl;
 			sourceTree = "<group>";
@@ -116,6 +118,7 @@
 			children = (
 				BC3EDA972C3E19C900AE444A /* MainView.swift */,
 				BC3EDAA22C3E2E4000AE444A /* TaskBar.swift */,
+				BC15E7F02C3B320E00F10A57 /* MixerView.swift */,
 				BC3EDA9B2C3E28D200AE444A /* Visualizer */,
 				BC347E432C50B9810020888C /* PlaygroundViews.swift */,
 			);
@@ -226,14 +229,15 @@
 				BC3EDA982C3E19C900AE444A /* MainView.swift in Sources */,
 				BC3EDA9F2C3E291900AE444A /* ViewsPicker.swift in Sources */,
 				BCD7181B2C34D14B006C3146 /* OSCManager.swift in Sources */,
+				BCD0B6E92C786464003B49D3 /* Utils.swift in Sources */,
 				BC15E7F12C3B320E00F10A57 /* MixerView.swift in Sources */,
 				BC347E442C50B9810020888C /* PlaygroundViews.swift in Sources */,
 				BCD718192C34D108006C3146 /* GamepadManager.swift in Sources */,
 				BC72640F2C7724C4008B9883 /* MenuBarView.swift in Sources */,
+				BCD0B6EB2C786660003B49D3 /* Track.swift in Sources */,
 				BC3EDA9D2C3E28FA00AE444A /* SceneToggle.swift in Sources */,
 				849282F02B8C83FB00064503 /* GamepadControlApp.swift in Sources */,
 				BC4C0DEE2C3CDE0A00651FE9 /* E4LMonoPanner.swift in Sources */,
-				845ABC932B8F3D6A00DB1B17 /* NOTES.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
