@@ -224,14 +224,25 @@ class GamepadManager: ObservableObject {
                     devices.enumerated().forEach { (deviceIndex, device) in
                         switch device.name {
                         case "360 WalkMix Creator":
-                            let azim = convertRange(value: Double(gamepad.leftThumbstick.xAxis.value))
-                            let elev = convertRange(value: Double(gamepad.rightThumbstick.yAxis.value))
-                            
                             device.parameters.enumerated().forEach { (paramIndex, param) in
                                 if param.name.contains("Azimuth") {
-                                    print(param.value)
-                                    self?.oscManager.send("/live/device/set/parameter/value", [selectedTrack, deviceIndex, paramIndex, azim])
+                                    let step: Float = 0.1
+                                if let curVal = param.value as? Float {
+                                    var newVal = curVal
+                                    let deadZone = true
+                                    
+                                    if (xAxis > 0) && deadZone {
+                                        newVal = newVal + step
+                                    }
+                                    
+                                    if (xAxis < 0) && deadZone {
+                                        newVal = newVal - step
+                                    }
+                                    print("Setting parameter \(param.name) to \(newVal) (device \(deviceIndex) param \(paramIndex))")
+                                    self?.oscManager.send("/live/device/set/parameter/value", [selectedTrack, deviceIndex, paramIndex, newVal])
                                 }
+                                }
+
                             }
                         case "E4L Mono Panner":
                             device.parameters.enumerated().forEach { (paramIndex, param) in
@@ -270,7 +281,6 @@ class GamepadManager: ObservableObject {
                 guard let devices = self?.dawState.tracks[selectedTrack].devices else { return }
                 
                 let yAxis = gamepad.rightThumbstick.yAxis.value
-                let xAxis = gamepad.rightThumbstick.xAxis.value
                 
                 // PANNING
                 if r2Mode {
@@ -289,14 +299,14 @@ class GamepadManager: ObservableObject {
                 if devices.count > 0 {
                     devices.enumerated().forEach { (deviceIndex, device) in
                         switch device.name {
-                        case "E4L Mono Panner":
-                            device.parameters.enumerated().forEach { (paramIndex, param) in
-                                switch param.name {
-                                case "Azim":
+                        case "360 WalkMix Creator":
+                                device.parameters.enumerated().forEach { (paramIndex, param) in
+                                    if param.name.contains("Elevation") {
+                                        let step: Float = 0.1
                                     if let curVal = param.value as? Float {
                                         var newVal = curVal
-                                        let step: Float = 9.0
-                                        let deadZone = abs(xAxis) < 0.2
+//                                        let deadZone = abs(yAxis) < 0.2
+                                        let deadZone = true
                                         
                                         if (yAxis > 0) && deadZone {
                                             newVal = newVal + step
@@ -306,33 +316,10 @@ class GamepadManager: ObservableObject {
                                             newVal = newVal - step
                                         }
                                         
-                                        self?.oscManager.send(
-                                            "/live/device/set/parameter/value",
-                                            [selectedTrack, deviceIndex, paramIndex, newVal]
-                                        )
+                                        print("Setting parameter \(param.name) to \(newVal) (device \(deviceIndex) param \(paramIndex))")
+                                        self?.oscManager.send("/live/device/set/parameter/value", [selectedTrack, deviceIndex, paramIndex, newVal])
                                     }
-                                case "Elev":
-                                    if let curVal = param.value as? Float {
-                                        var newVal = curVal
-                                        let step: Float = 9.0
-                                        let deadZone = abs(yAxis) < 0.2
-                                        
-                                        if (xAxis > 0) && deadZone {
-                                            newVal = newVal + step
-                                        }
-                                        
-                                        if (xAxis < 0) && deadZone {
-                                            newVal = newVal - step
-                                        }
-                                        
-                                        self?.oscManager.send(
-                                            "/live/device/set/parameter/value",
-                                            [selectedTrack, deviceIndex, paramIndex, newVal]
-                                        )
                                     }
-                                default:
-                                    break
-                                }
                             }
                         default:
                             break
@@ -343,6 +330,7 @@ class GamepadManager: ObservableObject {
             default:
                 break
             }
+            
         }
     }
 }
