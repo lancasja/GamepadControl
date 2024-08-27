@@ -1,0 +1,46 @@
+# Build artifacts
+build/
+DerivedData/
+*.xcarchive
+
+# User-specific settings
+xcuserdata/
+UserInterfaceState.xcuserstate
+
+# App packaging
+*.ipa
+*.app
+*.dSYM*
+
+# IDE-specific files
+*.xcworkspace
+
+# Third-party dependencies (if applicable)
+# Adjust these lines based on your specific tools
+# (e.g., Pods/ for CocoaPods, Carthage/ for Carthage)
+Pods/
+Carthage/
+
+# Playgrounds (optional)
+timeline.xctimeline
+playground.xcworkspace
+
+# Code signing (optional)
+# Consider excluding sensitive code signing files
+*.xcsigh
+
+# Fastlane (optional)
+# Exclude reports, screenshots, and environment variables if using Fastlane
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots/**/*.png
+fastlane/test_output.fastlane
+fastlane/*.env
+
+# Other potential exclusions (consider your project needs)
+# - Generated asset catalogs (if using asset catalogs)
+#   *.xcassets/
+# - Code coverage reports (if using code coverage tools)
+#   coverage/
+
+.DS_Store
