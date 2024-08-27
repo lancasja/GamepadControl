@@ -29,6 +29,7 @@ class GamepadManager: ObservableObject {
     @ObservedObject var dawState = DAWState.shared
     
     @Published var gamepad: GCController?
+    @Published var vendorName: String?
     
     @Published var xButtonPressed: Bool = false
     @Published var circleButtonPressed: Bool = false
@@ -69,6 +70,7 @@ class GamepadManager: ObservableObject {
         guard let gamepad = notification.object as? GCController else { return }
         self.gamepad = gamepad
         print("\(gamepad.vendorName!) connected")
+        self.vendorName = gamepad.vendorName
         
         GCController.shouldMonitorBackgroundEvents = true
         setupGamepadInputHandling(gamepad)
@@ -76,6 +78,7 @@ class GamepadManager: ObservableObject {
     
     @objc func gamepadDisconnected(_ notification: Notification) {
         self.gamepad = nil
+        self.vendorName = nil
         print("Gamepad diconnected")
     }
 
