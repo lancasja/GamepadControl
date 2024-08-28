@@ -1,12 +1,6 @@
-//
-//  GamepadManager.swift
-//  GamepadControl
-//
-//  Created by Jonathan Lancaster on 7/2/24.
-//
-
 import SwiftUI
 import GameController
+import OSCKit
 
 func convertRange(value: Double) -> Double {
         let inputStart = -1.0
@@ -44,6 +38,11 @@ class GamepadManager: ObservableObject {
     @Published var l1Pressed: Bool = false
     @Published var r1Pressed: Bool = false
     
+    @Published var leftStickXValue: CGFloat = 0.0
+    @Published var leftStickYValue: CGFloat = 0.0
+    @Published var rightStickXValue: CGFloat = 0.0
+    @Published var rightStickYValue: CGFloat = 0.0
+    
     @Published var r2Mode: Bool = false
     
     init() {
@@ -73,7 +72,303 @@ class GamepadManager: ObservableObject {
         self.vendorName = gamepad.vendorName
         
         GCController.shouldMonitorBackgroundEvents = true
-        setupGamepadInputHandling(gamepad)
+        
+        guard let input = gamepad.physicalInputProfile as? GCDualSenseGamepad else {
+            print("Error getting gamepad input")
+            return
+        }
+        
+        input.buttonA.valueChangedHandler = { element, value, pressed in
+            self.xButtonPressed = pressed
+            
+            if !pressed {
+                let is_playing = self.dawState.is_playing
+                
+                if is_playing {
+                    self.oscManager.send("/live/song/stop_playing")
+                } else {
+                    self.oscManager.send("/live/song/continue_playing")
+                }
+            }
+        }
+        
+        input.buttonB.valueChangedHandler = { element, value, pressed in
+            self.circleButtonPressed = pressed
+            
+            if !pressed {
+                let record_mode = self.dawState.record_mode
+                self.dawState.record_mode = !record_mode
+                self.oscManager.send("/live/song/set/record_mode", [!record_mode])
+            }
+        }
+        
+        input.buttonX.valueChangedHandler = { element, value, pressed in
+            self.squareButtonPressed = pressed
+            
+            if !pressed {
+                let is_playing = self.dawState.is_playing
+                
+                if is_playing {
+                    self.oscManager.send("/live/song/stop_playing")
+                }
+                
+                self.oscManager.send("/live/song/set/current_song_time", [0])
+            }
+        }
+        
+        input.buttonY.valueChangedHandler = { element, value, pressed in
+            self.triangleButtonPressed = pressed
+            
+            if !pressed {
+                let selectedTrackIndex = self.dawState.selectedTrack
+                let arm = self.dawState.tracks[selectedTrackIndex].arm
+                self.dawState.tracks[selectedTrackIndex].arm = !arm
+                self.oscManager.send("/live/track/set/arm", [selectedTrackIndex, !arm])
+            }
+        }
+        
+        input.dpad.down.valueChangedHandler = { element, value, pressed in
+            self.dpadDownPressed = pressed
+            
+            if !pressed {
+                let selectedTrackIndex = self.dawState.selectedTrack
+                var selectedTrack: Track = self.dawState.tracks[selectedTrackIndex]
+
+                selectedTrack.devices.enumerated().forEach { deviceIndex, device in
+                    if (device.name == "360 WalkMix Creator") && (device.parameters.count > 0) {
+                        device.parameters.enumerated().forEach { paramIndex, param in
+                            if param.name.contains("Mute") {
+                                let muteValue = selectedTrack.devices[deviceIndex].parameters[paramIndex].value
+                                let mute: Bool = (muteValue as! Float == 1.0) ? true : false
+                                
+                                selectedTrack.devices[deviceIndex].parameters[paramIndex].value = !mute ? 1.0 : 0.0
+                                
+                                self.oscManager.send(
+                                    "/live/device/set/parameter/value",
+                                    [selectedTrackIndex, deviceIndex, paramIndex, !mute]
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
+        input.dpad.up.valueChangedHandler = { element, value, pressed in
+            self.dpadUpPressed = pressed
+            
+            if !pressed {
+                let selectedTrackIndex = self.dawState.selectedTrack
+                var selectedTrack: Track = self.dawState.tracks[selectedTrackIndex]
+
+                selectedTrack.devices.enumerated().forEach { deviceIndex, device in
+                    if (device.name == "360 WalkMix Creator") && (device.parameters.count > 0) {
+                        device.parameters.enumerated().forEach { paramIndex, param in
+                            if param.name.contains("Solo") {
+                                let soloValue = selectedTrack.devices[deviceIndex].parameters[paramIndex].value
+                                let solo: Bool = (soloValue as! Float == 1.0) ? true : false
+                                
+                                selectedTrack.devices[deviceIndex].parameters[paramIndex].value = !solo ? 1.0 : 0.0
+                                
+                                self.oscManager.send(
+                                    "/live/device/set/parameter/value",
+                                    [selectedTrackIndex, deviceIndex, paramIndex, !solo]
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
+        input.dpad.left.valueChangedHandler = { element, value, pressed in
+            self.dpadLeftPressed = pressed
+            self.oscManager.send("/live/song/undo")
+        }
+        
+        input.dpad.right.valueChangedHandler = { element, value, pressed in
+            self.dpadRightPressed = pressed
+            self.oscManager.send("/live/song/redo")
+        }
+        
+        input.leftShoulder.valueChangedHandler = { element, value, pressed in
+            self.l1Pressed = pressed
+            
+            if !pressed {
+                let selectedTrackIndex = self.dawState.selectedTrack
+                var nextTrack = selectedTrackIndex - 1
+                
+                let numTracks = self.dawState.numTracks
+                
+                if nextTrack < 0 {
+                    nextTrack = numTracks - 1
+                }
+                
+                self.dawState.selectedTrack = nextTrack
+                self.oscManager.send("/live/view/set/selected_track", [nextTrack])
+            }
+        }
+        
+        input.rightShoulder.valueChangedHandler = { element, value, pressed in
+            self.r1Pressed = pressed
+            
+            if !pressed {
+                let selectedTrackIndex = self.dawState.selectedTrack
+                var nextTrack = selectedTrackIndex + 1
+                let numTracks = self.dawState.numTracks
+                
+                if nextTrack >= numTracks {
+                    nextTrack = nextTrack - numTracks
+                }
+                
+                self.dawState.selectedTrack = nextTrack
+                self.oscManager.send("/live/view/set/selected_track", [nextTrack])
+            }
+        }
+        
+        input.rightTrigger.valueChangedHandler = { element, value, pressed in
+            self.r2Mode = pressed
+        }
+        
+        input.leftThumbstick.yAxis.valueChangedHandler = { element, value in
+            let selectedTrackIndex: Int = self.dawState.selectedTrack
+            let selectedTrack: Track = self.dawState.tracks[selectedTrackIndex]
+            
+            selectedTrack.devices.enumerated().forEach { deviceIndex, device in
+                if (device.name == "360 WalkMix Creator") && (device.parameters.count > 0) {
+                    device.parameters.enumerated().forEach { paramIndex, param in
+                        let step: Float = 0.1
+                        
+                        if self.r2Mode {
+                            if param.name.contains("Gain") {
+                                let gainValue = selectedTrack.devices[deviceIndex].parameters[paramIndex].value
+                                var p: Parameter = param
+                                
+                                if value > 0 {
+                                    p.value = gainValue as! Float + step
+                                }
+                                
+                                if value < 0 {
+                                    p.value = gainValue as! Float - step
+                                }
+                                
+                                self.oscManager.send(
+                                    "/live/device/set/parameter/value",
+                                    [selectedTrackIndex, deviceIndex, paramIndex, p.value as! Float]
+                                )
+                            }
+                        } else {
+                            if param.name.contains("Elevation") {
+                                
+                                if let curVal = param.value as? Float {
+                                    var newVal = curVal
+                                    let deadZone = true
+                                    
+                                    if (value > 0) && deadZone {
+                                        newVal = newVal + step
+                                    }
+                                    
+                                    if (value < 0) && deadZone {
+                                        newVal = newVal - step
+                                    }
+                                    print("Setting parameter \(param.name) to \(newVal) (device \(deviceIndex) param \(paramIndex))")
+                                    self.oscManager.send("/live/device/set/parameter/value", [selectedTrackIndex, deviceIndex, paramIndex, newVal])
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
+        input.leftThumbstick.xAxis.valueChangedHandler = { element, value in
+            let selectedTrackIndex: Int = self.dawState.selectedTrack
+            let selectedTrack: Track = self.dawState.tracks[selectedTrackIndex]
+            let devices = selectedTrack.devices
+            
+            if selectedTrack.devices.count > 0 {
+                devices.enumerated().forEach { (deviceIndex, device) in
+                    if device.name == "360 WalkMix Creator" {
+                        device.parameters.enumerated().forEach { (paramIndex, param) in
+                            if param.name.contains("Width") {
+                                let step: Float = 0.1
+                                
+                                if let curVal = param.value as? Float {
+                                    var newVal = curVal
+                                    let deadZone = true
+                                    
+                                    if (value > 0) && deadZone {
+                                        newVal = newVal + step
+                                    }
+                                    
+                                    if (value < 0) && deadZone {
+                                        newVal = newVal - step
+                                    }
+                                    print("Setting parameter \(param.name) to \(newVal) (device \(deviceIndex) param \(paramIndex))")
+                                    self.oscManager.send("/live/device/set/parameter/value", [selectedTrackIndex, deviceIndex, paramIndex, newVal])
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
+        input.rightThumbstick.yAxis.valueChangedHandler = { element, value in
+            let selectedTrackIndex: Int = self.dawState.selectedTrack
+            let selectedTrack: Track = self.dawState.tracks[selectedTrackIndex]
+            
+            // PANNING
+            if self.r2Mode {
+                var newPan = selectedTrack.panning
+                
+                if value >= 1 {
+                    newPan = newPan - 0.01
+                }
+                
+                if value <= -1 {
+                    newPan = newPan + 0.01
+                }
+                
+                self.oscManager.send("/live/track/set/panning", [selectedTrackIndex, newPan])
+            }
+        }
+        
+        input.rightThumbstick.xAxis.valueChangedHandler = { element, value in
+            let selectedTrackIndex: Int = self.dawState.selectedTrack
+            let selectedTrack: Track = self.dawState.tracks[selectedTrackIndex]
+            let devices = selectedTrack.devices
+            
+            // AZIMUTH
+            if devices.count > 0 {
+                devices.enumerated().forEach { (deviceIndex, device) in
+                    if device.name == "360 WalkMix Creator" {
+                        device.parameters.enumerated().forEach { (paramIndex, param) in
+                            if param.name.contains("Azimuth") {
+                                let step: Float = 0.1
+                                
+                                if let curVal = param.value as? Float {
+                                    var newVal = curVal
+                                    //                                        let deadZone = abs(yAxis) < 0.2
+                                    let deadZone = true
+                                    
+                                    if (value > 0) && deadZone {
+                                        newVal = newVal + step
+                                    }
+                                    
+                                    if (value < 0) && deadZone {
+                                        newVal = newVal - step
+                                    }
+                                    
+                                    print("Setting parameter \(param.name) to \(newVal) (device \(deviceIndex) param \(paramIndex))")
+                                    self.oscManager.send("/live/device/set/parameter/value", [selectedTrackIndex, deviceIndex, paramIndex, newVal])
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
     
     @objc func gamepadDisconnected(_ notification: Notification) {
@@ -81,261 +376,4 @@ class GamepadManager: ObservableObject {
         self.vendorName = nil
         print("Gamepad diconnected")
     }
-
-    func setupGamepadInputHandling(_ gamepad: GCController) {
-        gamepad.extendedGamepad?.valueChangedHandler = {
-            [weak self] (extGamepad: GCExtendedGamepad, element: GCControllerElement) in
-                self?.handleGamepadInput(gamepad: extGamepad, element: element)
-        }
-    }
-    
-    func handleGamepadInput(gamepad: GCExtendedGamepad, element: GCControllerElement) {
-        DispatchQueue.main.async { [weak self] in
-            
-            switch element {
-            case gamepad.buttonA:
-                let isPressed = gamepad.buttonA.isPressed
-                self?.xButtonPressed = isPressed
-                if isPressed {
-                    guard let is_playing = self?.dawState.is_playing else { return }
-                    
-                    if is_playing {
-                        self?.oscManager.send("/live/song/stop_playing")
-                    } else {
-                        self?.oscManager.send("/live/song/continue_playing")
-                    }
-                }
-            case gamepad.buttonB:
-                let isPressed = gamepad.buttonB.isPressed
-                self?.circleButtonPressed = isPressed
-                if isPressed {
-                    guard let record_mode = self?.dawState.record_mode else { return }
-                    self?.dawState.record_mode = !record_mode
-                    self?.oscManager.send("/live/song/set/record_mode", [!record_mode])
-                }
-            case gamepad.buttonX:
-                let isPressed = gamepad.buttonX.isPressed
-                self?.squareButtonPressed = isPressed
-                if isPressed {
-                    guard let is_playing = self?.dawState.is_playing else { return }
-                    
-                    if is_playing {
-                        self?.oscManager.send("/live/song/stop_playing")
-                    }
-                    
-                    self?.oscManager.send("/live/song/set/current_song_time", [0])
-                }
-            case gamepad.buttonY:
-                let isPressed = gamepad.buttonY.isPressed
-                self?.triangleButtonPressed = isPressed
-                if isPressed {
-                    guard let selectedTrack = self?.dawState.selectedTrack else { return }
-                    guard let arm = self?.dawState.tracks[selectedTrack].arm else { return }
-                    self?.dawState.tracks[selectedTrack].arm = !arm
-                    self?.oscManager.send("/live/track/set/arm", [selectedTrack, !arm])
-                }
-            case gamepad.dpad:
-                self?.dpadDownPressed = gamepad.dpad.down.isPressed
-                if gamepad.dpad.down.isPressed {
-                    guard let selectedTrack = self?.dawState.selectedTrack else { return }
-                    guard let mute = self?.dawState.tracks[selectedTrack].mute else { return }
-                    self?.dawState.tracks[selectedTrack].mute = !mute
-                    self?.oscManager.send("/live/track/set/mute", [selectedTrack, !mute])
-                }
-                
-                self?.dpadUpPressed = gamepad.dpad.up.isPressed
-                if gamepad.dpad.up.isPressed {
-                    guard let selectedTrack = self?.dawState.selectedTrack else { return }
-                    guard let solo = self?.dawState.tracks[selectedTrack].solo else { return }
-                    self?.dawState.tracks[selectedTrack].solo = !solo
-                    self?.oscManager.send("/live/track/set/solo", [selectedTrack, !solo])
-                }
-                
-                self?.dpadLeftPressed = gamepad.dpad.left.isPressed
-                if gamepad.dpad.left.isPressed {
-                    self?.oscManager.send("/live/song/undo")
-                }
-                
-                self?.dpadRightPressed = gamepad.dpad.right.isPressed
-                if gamepad.dpad.right.isPressed {
-                    self?.oscManager.send("/live/song/redo")
-                }
-                
-            case gamepad.leftShoulder:
-                let isPressed = gamepad.leftShoulder.isPressed
-                self?.l1Pressed = isPressed
-                if isPressed {
-                    if let selectedTrack = self?.dawState.selectedTrack {
-                        var nextTrack = selectedTrack - 1
-                        if let numTracks = self?.dawState.numTracks {
-                            if nextTrack < 0 {
-                                nextTrack = numTracks - 1
-                            }
-                        }
-                        self?.dawState.selectedTrack = nextTrack
-                        self?.oscManager.send("/live/view/set/selected_track", [nextTrack])
-                    }
-                }
-            case gamepad.rightShoulder:
-                let isPressed = gamepad.rightShoulder.isPressed
-                self?.r1Pressed = isPressed
-                if isPressed {
-                    if let selectedTrack = self?.dawState.selectedTrack {
-                        var nextTrack = selectedTrack + 1
-                        if let numTracks = self?.dawState.numTracks {
-                            if nextTrack >= numTracks {
-                                nextTrack = nextTrack - numTracks
-                            }
-                        }
-                        self?.dawState.selectedTrack = nextTrack
-                        self?.oscManager.send("/live/view/set/selected_track", [nextTrack])
-                    }
-                }
-            case gamepad.rightTrigger:
-                let isPressed = gamepad.rightTrigger.isPressed
-                self?.r2Mode = isPressed
-                
-            case gamepad.leftThumbstick:
-                guard let r2Mode = self?.r2Mode else { return }
-                guard let selectedTrack = self?.dawState.selectedTrack else { return }
-                guard let volume = self?.dawState.tracks[selectedTrack].volume else { return }
-                guard let devices = self?.dawState.tracks[selectedTrack].devices else { return }
-                
-                let yAxis = gamepad.leftThumbstick.yAxis.value
-                let xAxis = gamepad.leftThumbstick.xAxis.value
-                
-                if r2Mode {
-                    var newVol: Float = volume
-                    
-                    if gamepad.leftThumbstick.up.isPressed {
-                        if volume < 1 {
-                            newVol = volume + 0.01
-                        }
-                    }
-                    
-                    if gamepad.leftThumbstick.down.isPressed {
-                        if volume > 0 {
-                            newVol = volume - 0.01
-                        }
-                    }
-                    
-                    self?.oscManager.send("/live/track/set/volume", [selectedTrack, newVol])
-                    self?.dawState.tracks[selectedTrack].volume = newVol
-                }
-                
-                if devices.count > 0 {
-                    devices.enumerated().forEach { (deviceIndex, device) in
-                        switch device.name {
-                        case "360 WalkMix Creator":
-                            device.parameters.enumerated().forEach { (paramIndex, param) in
-                                if param.name.contains("Azimuth") {
-                                    let step: Float = 0.1
-                                if let curVal = param.value as? Float {
-                                    var newVal = curVal
-                                    let deadZone = true
-                                    
-                                    if (xAxis > 0) && deadZone {
-                                        newVal = newVal + step
-                                    }
-                                    
-                                    if (xAxis < 0) && deadZone {
-                                        newVal = newVal - step
-                                    }
-                                    print("Setting parameter \(param.name) to \(newVal) (device \(deviceIndex) param \(paramIndex))")
-                                    self?.oscManager.send("/live/device/set/parameter/value", [selectedTrack, deviceIndex, paramIndex, newVal])
-                                }
-                                }
-
-                            }
-                        case "E4L Mono Panner":
-                            device.parameters.enumerated().forEach { (paramIndex, param) in
-                                switch param.name {
-                                case "Radius":
-                                    if let curVal = param.value as? Float {
-                                        var newVal = curVal
-                                        let step: Float = 0.1
-                                        let deadZone = abs(xAxis) < 0.2
-                                        
-                                        if (yAxis > 0) && deadZone {
-                                            newVal = newVal + step
-                                        }
-                                        
-                                        if (yAxis < 0) && deadZone {
-                                            newVal = newVal - step
-                                        }
-                                        
-                                        self?.oscManager.send(
-                                            "/live/device/set/parameter/value",
-                                            [selectedTrack, deviceIndex, paramIndex, newVal]
-                                        )
-                                    }
-                                default:
-                                    break
-                                }
-                            }
-                        default:
-                            break
-                        }
-                    }
-                }
-            case gamepad.rightThumbstick:
-                guard let r2Mode = self?.r2Mode else { return }
-                guard let selectedTrack = self?.dawState.selectedTrack else { return }
-                guard let devices = self?.dawState.tracks[selectedTrack].devices else { return }
-                
-                let yAxis = gamepad.rightThumbstick.yAxis.value
-                
-                // PANNING
-                if r2Mode {
-                    self?.oscManager.send("/live/track/set/panning", [selectedTrack, yAxis])
-                    
-                    if yAxis >= 1 {
-                        self?.dawState.tracks[selectedTrack].panning = yAxis - 0.01
-                    }
-                    
-                    if yAxis <= -1 {
-                        self?.dawState.tracks[selectedTrack].panning = yAxis + 0.01
-                    }
-                }
-                
-                // AZIMUTH
-                if devices.count > 0 {
-                    devices.enumerated().forEach { (deviceIndex, device) in
-                        switch device.name {
-                        case "360 WalkMix Creator":
-                                device.parameters.enumerated().forEach { (paramIndex, param) in
-                                    if param.name.contains("Elevation") {
-                                        let step: Float = 0.1
-                                    if let curVal = param.value as? Float {
-                                        var newVal = curVal
-//                                        let deadZone = abs(yAxis) < 0.2
-                                        let deadZone = true
-                                        
-                                        if (yAxis > 0) && deadZone {
-                                            newVal = newVal + step
-                                        }
-                                        
-                                        if (yAxis < 0) && deadZone {
-                                            newVal = newVal - step
-                                        }
-                                        
-                                        print("Setting parameter \(param.name) to \(newVal) (device \(deviceIndex) param \(paramIndex))")
-                                        self?.oscManager.send("/live/device/set/parameter/value", [selectedTrack, deviceIndex, paramIndex, newVal])
-                                    }
-                                    }
-                            }
-                        default:
-                            break
-                        }
-                    }
-                }
-
-            default:
-                break
-            }
-            
-        }
-    }
 }
-
-

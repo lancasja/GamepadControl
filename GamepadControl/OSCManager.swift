@@ -1,10 +1,3 @@
-//
-//  OSCManager.swift
-//  GamepadControl
-//
-//  Created by Jonathan Lancaster on 7/2/24.
-//
-
 import SwiftUI
 import OSCKit
 
@@ -249,8 +242,8 @@ class OSCManager: ObservableObject {
                 self.send("/live/track/get/num_devices", [trackIndex])
                 
                 self.send("/live/track/start_listen/name", [trackIndex])
-                self.send("/live/track/start_listen/mute", [trackIndex])
-                self.send("/live/track/start_listen/solo", [trackIndex])
+//                self.send("/live/track/start_listen/mute", [trackIndex])
+//                self.send("/live/track/start_listen/solo", [trackIndex])
                 self.send("/live/track/start_listen/arm", [trackIndex])
                 self.send("/live/track/start_listen/volume", [trackIndex])
                 self.send("/live/track/start_listen/panning", [trackIndex])
@@ -289,13 +282,13 @@ class OSCManager: ObservableObject {
             } catch {
                 print("Error getting arm: \(error)")
             }
-        case "/live/track/get/mute":
-            do {
-                let values = try message.values.masked(Int.self, Bool.self)
-                self.dawState.tracks[values.0].mute = values.1
-            } catch {
-                print("Error getting mute: \(error)")
-            }
+//        case "/live/track/get/mute":
+//            do {
+//                let values = try message.values.masked(Int.self, Bool.self)
+//                self.dawState.tracks[values.0].mute = values.1
+//            } catch {
+//                print("Error getting mute: \(error)")
+//            }
         case "/live/track/get/name":
             do {
                 let values = try message.values.masked(Int.self, String.self)
@@ -304,16 +297,17 @@ class OSCManager: ObservableObject {
             } catch {
                 print("Error getting track name: \(error)")
             }
-        case "/live/track/get/solo":
-            do {
-                let values = try message.values.masked(Int.self, Bool.self)
-                self.dawState.tracks[values.0].solo = values.1
-            } catch {
-                print("Error getting solo: \(error)")
-            }
+//        case "/live/track/get/solo":
+//            do {
+//                let values = try message.values.masked(Int.self, Bool.self)
+//                self.dawState.tracks[values.0].solo = values.1
+//            } catch {
+//                print("Error getting solo: \(error)")
+//            }
         
         // ==== DEVICES ====
         case "/live/track/get/num_devices":
+            print("NUM DEVICES", message)
             do {
                 let values = try message.values.masked(Int.self, Int.self)
                 self.dawState.tracks[values.0].num_devices = values.1

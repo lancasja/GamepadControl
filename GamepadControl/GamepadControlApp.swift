@@ -1,10 +1,3 @@
-//
-//  GamepadControlApp.swift
-//  GamepadControl
-//
-//  Created by Admin on 2/26/24.
-//
-
 import SwiftUI
 import SwiftData
 
@@ -13,19 +6,14 @@ struct GCTestApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     
     @StateObject private var gamepad = GamepadManager()
-    @StateObject private var osc = OSCManager()
     
     var body: some Scene {
         Window("Visualizer", id: "visualizer") {
-            ContentView()
-                .environmentObject(gamepad)
-                .environmentObject(osc)
+            ContentView().environmentObject(gamepad)
         }
         
         MenuBarExtra {
-            MenuBarView()
-                .environmentObject(gamepad)
-                .environmentObject(osc)
+            MenuBarView().environmentObject(gamepad)
         } label: {
             Image(systemName: "gamecontroller\(gamepad.vendorName != nil ? ".fill" : "")")
         }
