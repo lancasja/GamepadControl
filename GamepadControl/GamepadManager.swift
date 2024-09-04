@@ -38,12 +38,13 @@ class GamepadManager: ObservableObject {
     @Published var l1Pressed: Bool = false
     @Published var r1Pressed: Bool = false
     
-    @Published var leftStickXValue: CGFloat = 0.0
-    @Published var leftStickYValue: CGFloat = 0.0
-    @Published var rightStickXValue: CGFloat = 0.0
-    @Published var rightStickYValue: CGFloat = 0.0
+    @Published var leftStickXValue: Float = 0.0
+    @Published var leftStickYValue: Float = 0.0
+    @Published var rightStickXValue: Float = 0.0
+    @Published var rightStickYValue: Float = 0.0
     
     @Published var r2Mode: Bool = false
+    @Published var l2Mode: Bool = false
     
     init() {
         setupGamepadObservers()
@@ -209,6 +210,10 @@ class GamepadManager: ObservableObject {
             }
         }
         
+        input.leftTrigger.valueChangedHandler = { element, value, pressed in
+            self.l2Mode = pressed
+        }
+        
         input.rightShoulder.valueChangedHandler = { element, value, pressed in
             self.r1Pressed = pressed
             
@@ -233,52 +238,85 @@ class GamepadManager: ObservableObject {
         input.leftThumbstick.yAxis.valueChangedHandler = { element, value in
             let selectedTrackIndex: Int = self.dawState.selectedTrack
             let selectedTrack: Track = self.dawState.tracks[selectedTrackIndex]
+            let devices = selectedTrack.devices
             
-            selectedTrack.devices.enumerated().forEach { deviceIndex, device in
-                if (device.name == "360 WalkMix Creator") && (device.parameters.count > 0) {
-                    device.parameters.enumerated().forEach { paramIndex, param in
-                        let step: Float = 0.1
-                        
-                        if self.r2Mode {
-                            if param.name.contains("Gain") {
-                                let gainValue = selectedTrack.devices[deviceIndex].parameters[paramIndex].value
-                                var p: Parameter = param
-                                
-                                if value > 0 {
-                                    p.value = gainValue as! Float + step
-                                }
-                                
-                                if value < 0 {
-                                    p.value = gainValue as! Float - step
-                                }
-                                
-                                self.oscManager.send(
-                                    "/live/device/set/parameter/value",
-                                    [selectedTrackIndex, deviceIndex, paramIndex, p.value as! Float]
-                                )
-                            }
-                        } else {
-                            if param.name.contains("Elevation") {
-                                
-                                if let curVal = param.value as? Float {
-                                    var newVal = curVal
-                                    let deadZone = true
-                                    
-                                    if (value > 0) && deadZone {
-                                        newVal = newVal + step
+            if devices.count > 0 {
+                devices.enumerated().forEach { (deviceIndex, device) in
+                    if device.name == "360 WalkMix Creator" {
+                        device.parameters.enumerated().forEach { (paramIndex, param) in
+                            if self.r2Mode {
+                                if param.name.contains("Gain") {
+                                    if let curVal = param.value as? Float {
+                                        var newVal = curVal
+                                        let step: Float = 0.1
+                                        
+                                        if value != 0 {
+                                            newVal += step * value
+                                            
+                                            if newVal >= param.max {
+                                                newVal = param.max
+                                            }
+                                            
+                                            if newVal <= param.min {
+                                                newVal = param.min
+                                            }
+                                        }
+                                        
+                                        print("Setting parameter \(param.name) to \(newVal) (device \(deviceIndex) param \(paramIndex))")
+                                        self.oscManager.send("/live/device/set/parameter/value", [selectedTrackIndex, deviceIndex, paramIndex, newVal])
                                     }
-                                    
-                                    if (value < 0) && deadZone {
-                                        newVal = newVal - step
-                                    }
-                                    print("Setting parameter \(param.name) to \(newVal) (device \(deviceIndex) param \(paramIndex))")
-                                    self.oscManager.send("/live/device/set/parameter/value", [selectedTrackIndex, deviceIndex, paramIndex, newVal])
                                 }
                             }
                         }
                     }
                 }
             }
+            
+//            selectedTrack.devices.enumerated().forEach { deviceIndex, device in
+//                if (device.name == "360 WalkMix Creator") && (device.parameters.count > 0) {
+//                    device.parameters.enumerated().forEach { paramIndex, param in
+//                        let step: Float = 0.1
+//                        
+//                        if self.r2Mode {
+//                            if param.name.contains("Gain") {
+//                                let gainValue = selectedTrack.devices[deviceIndex].parameters[paramIndex].value
+//                                var p: Parameter = param
+//                                
+//                                if value > 0 {
+//                                    p.value = gainValue as! Float + step
+//                                }
+//                                
+//                                if value < 0 {
+//                                    p.value = gainValue as! Float - step
+//                                }
+//                                
+//                                self.oscManager.send(
+//                                    "/live/device/set/parameter/value",
+//                                    [selectedTrackIndex, deviceIndex, paramIndex, p.value as! Float]
+//                                )
+//                            }
+//                        } else {
+//                            if param.name.contains("Elevation") {
+//                                
+//                                if let curVal = param.value as? Float {
+//                                    var newVal = curVal
+//                                    let deadZone = true
+//                                    
+//                                    if (value > 0) && deadZone {
+//                                        newVal = newVal + step
+//                                    }
+//                                    
+//                                    if (value < 0) && deadZone {
+//                                        newVal = newVal - step
+//                                    }
+//                                    print("Setting parameter \(param.name) to \(newVal) (device \(deviceIndex) param \(paramIndex))")
+//                                    self.oscManager.send("/live/device/set/parameter/value", [selectedTrackIndex, deviceIndex, paramIndex, newVal])
+//                                }
+//                            }
+//                        }
+//                    }
+//                }
+//            }
         }
         
         input.leftThumbstick.xAxis.valueChangedHandler = { element, value in
@@ -286,26 +324,53 @@ class GamepadManager: ObservableObject {
             let selectedTrack: Track = self.dawState.tracks[selectedTrackIndex]
             let devices = selectedTrack.devices
             
-            if selectedTrack.devices.count > 0 {
+            if devices.count > 0 {
                 devices.enumerated().forEach { (deviceIndex, device) in
                     if device.name == "360 WalkMix Creator" {
                         device.parameters.enumerated().forEach { (paramIndex, param) in
-                            if param.name.contains("Width") {
-                                let step: Float = 0.1
-                                
-                                if let curVal = param.value as? Float {
-                                    var newVal = curVal
-                                    let deadZone = true
-                                    
-                                    if (value > 0) && deadZone {
-                                        newVal = newVal + step
+                            if self.l2Mode {
+                                if param.name.contains("Width") {
+                                    if let curVal = param.value as? Float {
+                                        var newVal = curVal
+                                        let step: Float = 0.1
+                                        
+                                        if value != 0 {
+                                            newVal += step * value
+                                            
+                                            if newVal >= param.max {
+                                                newVal = param.max
+                                            }
+                                            
+                                            if newVal <= param.min {
+                                                newVal = param.min
+                                            }
+                                        }
+                                        
+                                        print("Setting parameter \(param.name) to \(newVal) (device \(deviceIndex) param \(paramIndex))")
+                                        self.oscManager.send("/live/device/set/parameter/value", [selectedTrackIndex, deviceIndex, paramIndex, newVal])
                                     }
-                                    
-                                    if (value < 0) && deadZone {
-                                        newVal = newVal - step
+                                }
+                            } else {
+                                if param.name.contains("Azimuth") {
+                                    if let curVal = param.value as? Float {
+                                        var newVal = curVal
+                                        let step: Float = 0.1
+                                        
+                                        if value != 0 {
+                                            newVal += step * value
+                                            
+                                            if newVal >= param.max {
+                                                newVal = param.max
+                                            }
+                                            
+                                            if newVal <= param.min {
+                                                newVal = param.min
+                                            }
+                                        }
+                                        
+                                        print("Setting parameter \(param.name) to \(newVal) (device \(deviceIndex) param \(paramIndex))")
+                                        self.oscManager.send("/live/device/set/parameter/value", [selectedTrackIndex, deviceIndex, paramIndex, newVal])
                                     }
-                                    print("Setting parameter \(param.name) to \(newVal) (device \(deviceIndex) param \(paramIndex))")
-                                    self.oscManager.send("/live/device/set/parameter/value", [selectedTrackIndex, deviceIndex, paramIndex, newVal])
                                 }
                             }
                         }
@@ -317,47 +382,27 @@ class GamepadManager: ObservableObject {
         input.rightThumbstick.yAxis.valueChangedHandler = { element, value in
             let selectedTrackIndex: Int = self.dawState.selectedTrack
             let selectedTrack: Track = self.dawState.tracks[selectedTrackIndex]
-            
-            // PANNING
-            if self.r2Mode {
-                var newPan = selectedTrack.panning
-                
-                if value >= 1 {
-                    newPan = newPan - 0.01
-                }
-                
-                if value <= -1 {
-                    newPan = newPan + 0.01
-                }
-                
-                self.oscManager.send("/live/track/set/panning", [selectedTrackIndex, newPan])
-            }
-        }
-        
-        input.rightThumbstick.xAxis.valueChangedHandler = { element, value in
-            let selectedTrackIndex: Int = self.dawState.selectedTrack
-            let selectedTrack: Track = self.dawState.tracks[selectedTrackIndex]
             let devices = selectedTrack.devices
             
-            // AZIMUTH
             if devices.count > 0 {
                 devices.enumerated().forEach { (deviceIndex, device) in
                     if device.name == "360 WalkMix Creator" {
                         device.parameters.enumerated().forEach { (paramIndex, param) in
-                            if param.name.contains("Azimuth") {
-                                let step: Float = 0.1
-                                
+                            if param.name.contains("Elevation") {
                                 if let curVal = param.value as? Float {
                                     var newVal = curVal
-                                    //                                        let deadZone = abs(yAxis) < 0.2
-                                    let deadZone = true
+                                    let step: Float = 0.1
                                     
-                                    if (value > 0) && deadZone {
-                                        newVal = newVal + step
-                                    }
-                                    
-                                    if (value < 0) && deadZone {
-                                        newVal = newVal - step
+                                    if value != 0 {
+                                        newVal += step * value
+                                        
+                                        if newVal >= param.max {
+                                            newVal = param.max
+                                        }
+                                        
+                                        if newVal <= param.min {
+                                            newVal = param.min
+                                        }
                                     }
                                     
                                     print("Setting parameter \(param.name) to \(newVal) (device \(deviceIndex) param \(paramIndex))")
@@ -368,6 +413,45 @@ class GamepadManager: ObservableObject {
                     }
                 }
             }
+        }
+        
+        input.rightThumbstick.xAxis.valueChangedHandler = { element, value in
+            self.rightStickXValue = value
+            
+            let selectedTrackIndex: Int = self.dawState.selectedTrack
+            let selectedTrack: Track = self.dawState.tracks[selectedTrackIndex]
+            let devices = selectedTrack.devices
+            
+            // AZIMUTH
+//            if devices.count > 0 {
+//                devices.enumerated().forEach { (deviceIndex, device) in
+//                    if device.name == "360 WalkMix Creator" {
+//                        device.parameters.enumerated().forEach { (paramIndex, param) in
+//                            if param.name.contains("Azimuth") {
+//                                if let curVal = param.value as? Float {
+//                                    var newVal = curVal
+//                                    let step: Float = 0.1
+//                                    
+//                                    if value != 0 {
+//                                        newVal += step * value
+//                                        
+//                                        if newVal >= param.max {
+//                                            newVal = param.max
+//                                        }
+//                                        
+//                                        if newVal <= param.min {
+//                                            newVal = param.min
+//                                        }
+//                                    }
+//                                    
+//                                    print("Setting parameter \(param.name) to \(newVal) (device \(deviceIndex) param \(paramIndex))")
+//                                    self.oscManager.send("/live/device/set/parameter/value", [selectedTrackIndex, deviceIndex, paramIndex, newVal])
+//                                }
+//                            }
+//                        }
+//                    }
+//                }
+//            }
         }
     }
     

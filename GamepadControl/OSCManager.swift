@@ -401,13 +401,50 @@ class OSCManager: ObservableObject {
             message.values.enumerated().forEach { (index, oscValue) in
                 if index > 1 {
                     switch oscValue {
-                    case let val as Any:
+                    case let val as Float:
                         self.dawState
                             .tracks[Int(trackIndex)]
                             .devices[Int(deviceIndex)]
                             .parameters[index - 2].value = val
-                        
                         self.send("/live/device/start_listen/parameter/value", [trackIndex, deviceIndex, index - 2])
+                    default:
+                        break
+                    }
+                    
+                    self.send("/live/device/get/parameters/min", [trackIndex, deviceIndex])
+                }
+            }
+        case "/live/device/get/parameters/min":
+            guard let trackIndex = message.values[0] as? Int32 else { return }
+            guard let deviceIndex = message.values[1] as? Int32 else { return }
+            
+            message.values.enumerated().forEach { (index, oscValue) in
+                if index > 1 {
+                    switch oscValue {
+                    case let val as Float:
+                        self.dawState
+                            .tracks[Int(trackIndex)]
+                            .devices[Int(deviceIndex)]
+                            .parameters[index - 2].min = val
+                    default:
+                        break
+                    }
+                }
+                
+                self.send("/live/device/get/parameters/max", [trackIndex, deviceIndex])
+            }
+        case "/live/device/get/parameters/max":
+            guard let trackIndex = message.values[0] as? Int32 else { return }
+            guard let deviceIndex = message.values[1] as? Int32 else { return }
+            
+            message.values.enumerated().forEach { (index, oscValue) in
+                if index > 1 {
+                    switch oscValue {
+                    case let val as Float:
+                        self.dawState
+                            .tracks[Int(trackIndex)]
+                            .devices[Int(deviceIndex)]
+                            .parameters[index - 2].max = val
                     default:
                         break
                     }
