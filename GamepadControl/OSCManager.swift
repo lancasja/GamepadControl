@@ -193,7 +193,7 @@ class OSCManager: ObservableObject {
         case "/live/song/get/num_tracks":
             do {
                 let numTracks = try message.values.masked(Int.self)
-                self.dawState.numTracks = numTracks
+//                self.dawState.numTracks = numTracks
                 
                 // 3. Get bulk track data within this block so it's executed
                 // once we know how many tracks there are
@@ -251,6 +251,7 @@ class OSCManager: ObservableObject {
             
             // 5. Create local tracks
             self.dawState.tracks = tracks
+            self.dawState.numTracks = tracks.count
             
             // 6. Get current track
             self.send("/live/view/get/selected_track")
@@ -406,13 +407,49 @@ class OSCManager: ObservableObject {
                             .tracks[Int(trackIndex)]
                             .devices[Int(deviceIndex)]
                             .parameters[index - 2].value = val
-                        
+
                         self.send("/live/device/start_listen/parameter/value", [trackIndex, deviceIndex, index - 2])
                     default:
                         break
                     }
                 }
             }
+//        case "/live/device/get/parameters/min":
+//            guard let trackIndex = message.values[0] as? Int32 else { return }
+//            guard let deviceIndex = message.values[1] as? Int32 else { return }
+//            
+//            message.values.enumerated().forEach { (index, oscValue) in
+//                if index > 1 {
+//                    switch oscValue {
+//                    case let val as Float:
+//                        self.dawState
+//                            .tracks[Int(trackIndex)]
+//                            .devices[Int(deviceIndex)]
+//                            .parameters[index - 2].min = val
+//
+//                    default:
+//                        break
+//                    }
+//                }
+//            }
+//        case "/live/device/get/parameters/max":
+//            guard let trackIndex = message.values[0] as? Int32 else { return }
+//            guard let deviceIndex = message.values[1] as? Int32 else { return }
+//            
+//            message.values.enumerated().forEach { (index, oscValue) in
+//                if index > 1 {
+//                    switch oscValue {
+//                    case let val as Any:
+//                        self.dawState
+//                            .tracks[Int(trackIndex)]
+//                            .devices[Int(deviceIndex)]
+//                            .parameters[index - 2].max = val
+//
+//                    default:
+//                        break
+//                    }
+//                }
+//            }
         case "/live/device/get/parameter/value_string":
             break
         case "/live/device/get/parameter/name":

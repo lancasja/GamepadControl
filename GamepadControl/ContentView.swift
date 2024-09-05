@@ -139,6 +139,12 @@ struct ContentView: View {
                 VStack {
                     GamepadButton(symbol: .l1, isPressed: gamepadManager.l1Pressed)
                     GamepadButton(symbol: .r1, isPressed: gamepadManager.r1Pressed)
+                    
+                    Divider()
+                    
+                    Text("Left thumbstick: X: \(gamepadManager.leftStickXValue) Y: \(gamepadManager.leftStickYValue)")
+                    Text("Right thumbstick: \(gamepadManager.leftStickXValue) Y: \(gamepadManager.rightStickYValue)")
+
                 }
             }
         }
