@@ -390,9 +390,9 @@ class OSCManager: ObservableObject {
                         .tracks[Int(trackIndex)]
                         .devices[Int(deviceIndex)]
                         .parameters.append(param)
-                    
-                    self.send("/live/device/get/parameters/value", [trackIndex, deviceIndex])
                 }
+                
+                self.send("/live/device/get/parameters/value", [trackIndex, deviceIndex])
             }
         case "/live/device/get/parameters/value":
             guard let trackIndex = message.values[0] as? Int32 else { return }
@@ -410,10 +410,10 @@ class OSCManager: ObservableObject {
                     default:
                         break
                     }
-                    
-                    self.send("/live/device/get/parameters/min", [trackIndex, deviceIndex])
                 }
             }
+            
+            self.send("/live/device/get/parameters/min", [trackIndex, deviceIndex])
         case "/live/device/get/parameters/min":
             guard let trackIndex = message.values[0] as? Int32 else { return }
             guard let deviceIndex = message.values[1] as? Int32 else { return }
